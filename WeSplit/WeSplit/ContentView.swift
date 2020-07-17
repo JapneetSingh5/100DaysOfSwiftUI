@@ -44,6 +44,7 @@ struct ContentView: View {
             Form {
                 
                 Section{
+                    
                     TextField("Amount", text: $checkAmount)
                         .keyboardType(.decimalPad)
 //                    Picker("Number Of People", selection: $numberOfPeople){
