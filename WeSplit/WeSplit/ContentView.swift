@@ -8,6 +8,18 @@
 
 import SwiftUI
 
+//struct Warning: ViewModifier{
+//    func body(content: Content) -> some View {
+//        content.foregroundColor(.red)
+//    }
+//}
+//
+//extension View{
+//    func warning() -> some View{
+//        self.modifier(Warning())
+//    }
+//}
+
 struct ContentView: View {
     @State var checkAmount = ""
     @State var numberOfPeople = ""
@@ -66,7 +78,7 @@ struct ContentView: View {
                 }
                 
                 Section(header: Text("Grand total")){
-                    Text("$\(grandTotal, specifier: "%.2f")")
+                    Text("$\(grandTotal, specifier: "%.2f")").foregroundColor(tipPercentage == 4 ? .red : .primary)
                 }
                 
                 Section(header: Text("Amount per person")){
