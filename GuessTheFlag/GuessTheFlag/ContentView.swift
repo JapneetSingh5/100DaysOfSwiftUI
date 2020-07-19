@@ -8,6 +8,21 @@
 
 import SwiftUI
 
+struct FlagImage: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+        .clipShape(Capsule())
+        .overlay(Capsule().stroke(Color.black, lineWidth: 1))
+            .shadow(color: Color.black, radius: 2)
+    }
+}
+
+extension View {
+    func flagImage() -> some View{
+        self.modifier(FlagImage())
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -24,21 +39,19 @@ struct ContentView: View {
             VStack(spacing: 30.0){
                 VStack {
                     Text("Tap the flag of ..").foregroundColor(.white)
-                    Text(countries[correctAnswer]).foregroundColor(.white).font(.largeTitle).fontWeight(.black)
+                    Text(countries[correctAnswer]).foregroundColor(.white).font(.largeTitle).fontWeight(.black).edgesIgnoringSafeArea(.all).frame(width: 300)
                 }
                 ForEach( 0..<3){ number in
                     Button(action: {
                         self.flagTapped(number)
                     }){
                         Image(self.countries[number])
-                        .renderingMode(.original)
-                        .clipShape(Capsule())
-                        .overlay(Capsule().stroke(Color.black, lineWidth: 1))
-                            .shadow(color: .black, radius: 2)
+                                .renderingMode(.original)
+                                .flagImage()
                         
                     }
                 }
-                Text("Score: \(correctCount) / \(questionCount*100)").fontWeight(.black).font(.headline).foregroundColor(.white)
+                Text("Score: \(correctCount) / \(questionCount)").fontWeight(.black).font(.headline).foregroundColor(.white)
                 Spacer()
             }
         }
