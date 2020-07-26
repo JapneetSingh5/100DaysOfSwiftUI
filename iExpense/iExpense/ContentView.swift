@@ -13,6 +13,19 @@ class User: ObservableObject {
     @Published var lastName = "Baggins"
 }
 
+struct SecondView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        VStack {
+            Text("Second View")
+            Button("Dismiss") {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
+}
+
 struct NestedView: View{
     @ObservedObject var user2: User
     
@@ -29,9 +42,18 @@ struct NestedView: View{
 
 struct ContentView: View {
     @ObservedObject var user = User()
+    @State private var showingSheet = false
 
     var body: some View {
-        NestedView(user2: user)
+        VStack {
+            NestedView(user2: user)
+            Button("Show Sheet") {
+                self.showingSheet.toggle()
+            }
+            .sheet(isPresented: $showingSheet) {
+                SecondView()
+            }
+        }
     }
 }
 
