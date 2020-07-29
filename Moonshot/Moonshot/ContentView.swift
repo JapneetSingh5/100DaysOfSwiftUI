@@ -19,30 +19,29 @@ struct Address: Codable {
 }
 
 struct ContentView: View {
-    @State private var user: User = User(name: "ABC", address: Address(street: "Street", city: "Delhi maybe"))
+    let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
+    let missions: [Mission] = Bundle.main.decode("missions.json")
+   
     var body: some View {
-        VStack {
-            Text("\(user.name)")
-            Button("Decode JSON") {
-                let input = """
+        NavigationView{
+            List(missions){mission in
+                NavigationLink(destination: Image(mission.image).resizable().scaledToFit().frame(width: 320))
                 {
-                    "name": "Taylor Swift",
-                    "address": {
-                        "street": "555, Taylor Swift Avenue",
-                        "city": "Nashville"
+                    HStack {
+                        Image(mission.image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 44, height:44)
+                        VStack(alignment: .leading) {
+                            Text(mission.displayName)
+                                .font(.headline)
+                            Text(mission.formattedLaunchDate)
+                        }
                     }
                 }
-                """
-
-               let data = Data(input.utf8)
-                let decoder = JSONDecoder()
-                if let user = try? decoder.decode(User.self, from: data) {
-                    print(user)
-                    self.user = user
-                }
             }
+            .navigationBarTitle("Moonshot")
         }
-
     }
 }
 
