@@ -25,7 +25,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             List(missions){mission in
-                NavigationLink(destination: Image(mission.image).resizable().scaledToFit().frame(width: 320))
+                NavigationLink(destination: MissionView(mission: mission, astronauts: self.astronauts))
                 {
                     HStack {
                         Image(mission.image)
