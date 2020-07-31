@@ -21,6 +21,8 @@ struct Address: Codable {
 struct ContentView: View {
     let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
+    
+    @State private var showCrew = UserDefaults.standard.bool(forKey: "showCrew")
    
     var body: some View {
         NavigationView{
@@ -28,19 +30,38 @@ struct ContentView: View {
                 NavigationLink(destination: MissionView(mission: mission, astronauts: self.astronauts))
                 {
                     HStack {
-                        Image(mission.image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 44, height:44)
+                        VStack{
+                            Image(mission.image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 44, height:44)
+                            Spacer()
+                        }
                         VStack(alignment: .leading) {
                             Text(mission.displayName)
                                 .font(.headline)
-                            Text(mission.formattedLaunchDate)
+                            if(!self.showCrew){
+                                Text(mission.formattedLaunchDate)
+                            }
+                            if(self.showCrew){
+                                ForEach(MissionView(mission: mission, astronauts: self.astronauts).astronauts, id: \.astronaut.id){astronautData in
+                                    return VStack(alignment: .leading){
+                                        Text("\(astronautData.astronaut.name)")
+                                        Text("\(astronautData.role)").foregroundColor(.secondary).font(.subheadline)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
             .navigationBarTitle("Moonshot")
+        .navigationBarItems(trailing:
+            Button(!showCrew ? "Crew Details" : "Launch Dates"){
+                self.showCrew.toggle()
+                UserDefaults.standard.set(self.showCrew, forKey: "showCrew")
+        })
+
         }
     }
 }
