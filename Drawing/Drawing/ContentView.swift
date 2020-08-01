@@ -161,18 +161,78 @@ struct Checkerboard: Shape {
     }
 }
 
-struct ContentView: View {
-    @State private var rows = 4
-    @State private var columns = 4
+struct Arrow: Shape {
+    var lineWidth: CGFloat = 10
+    
+    var animatableData: CGFloat {
+        get { lineWidth }
+        set { self.lineWidth = newValue }
+    }
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.height/3))
+        path.addLine(to: CGPoint(x: rect.width*2/3, y: rect.height/3))
+        path.addLine(to: CGPoint(x: rect.width*2/3, y: rect.height))
+        path.addLine(to: CGPoint(x: rect.width/3, y: rect.height))
+        path.addLine(to: CGPoint(x: rect.width/3, y: rect.height/3))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.height/3))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        
+        
+        return path
+    }
+}
+
+struct ColorStylingRectangle: View{
+    var amount = 0.0
+    var steps = 100
 
     var body: some View {
-        Checkerboard(rows: rows, columns: columns)
-            .onTapGesture {
-                withAnimation(.linear(duration: 3)) {
-                    self.rows = 8
-                    self.columns = 16
+        ZStack {
+            ForEach(0..<steps) { value in
+                RoundedRectangle(cornerRadius: 20)
+                    .inset(by: CGFloat(value))
+                    .strokeBorder(LinearGradient(gradient: Gradient(colors: [
+                        self.color(for: value, brightness: 1),
+                        self.color(for: value, brightness: 0.5)
+                    ]), startPoint: .top, endPoint: .bottom), lineWidth: 2)
+            }
+        }.drawingGroup()
+    }
+
+    func color(for value: Int, brightness: Double) -> Color {
+        var targetHue = Double(value) / Double(self.steps) + self.amount
+
+        if targetHue > 1 {
+            targetHue -= 1
+        }
+
+        return Color(hue: targetHue, saturation: 1, brightness: brightness)
+    }
+}
+struct ContentView: View {
+    @State private var lineWidth: CGFloat = 10
+    @State private var amount = 0.25
+
+    var body: some View {
+        VStack{
+            Arrow()
+                .stroke(Color.black, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                .animation(Animation.easeInOut(duration: 1))
+                .frame(width: 200)
+            Slider(value: $lineWidth, in: 1...20).animation(Animation.easeInOut(duration: 1))
+            Button("Max Line Width"){
+                withAnimation{
+                    self.lineWidth = 20
                 }
             }
+            ColorStylingRectangle(amount: amount, steps: 100)
+            Slider(value: $amount, in: 0...1)
+        }
+
+        .padding()
     }
 }
 
