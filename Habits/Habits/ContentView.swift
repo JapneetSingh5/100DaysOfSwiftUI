@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @ObservedObject var habitList: HabitList = HabitList()
+    @ObservedObject var habitList = HabitList()
+    @State private var showAddHabit: Bool = false
     
     func removeHabits(at offsets: IndexSet){
         habitList.list.remove(atOffsets: offsets)
@@ -19,21 +19,21 @@ struct ContentView: View {
         NavigationView{
             List{
                 
-                ForEach(0..<5){ _ in
+                ForEach(habitList.list){ habit in
                     NavigationLink(destination: Text("Detailed Habit")){
                         HStack {
-                            Text("💻")
+                            Text(habit.emoji)
                             VStack(alignment: .leading){
-                                Text("100 Days Of Code")
+                                Text(habit.name)
                                     .font(.headline)
-                                Text("Developer Goals")
+                                Text(habit.category)
                                     .font(.subheadline)
                             }
                             Spacer()
                             Spacer()
                             VStack{
-                                Text("63 Days").font(.title)
-                                Text("of 100 Days").font(.caption)
+                                Text("\(habit.count) Days").font(.title)
+                                Text("of \(habit.target) Days").font(.caption)
                             }
                         }.padding(.leading, 10).padding(.trailing, 10)
                     }
@@ -43,14 +43,18 @@ struct ContentView: View {
                 HStack{
                     Spacer()
                     Button("Add New Habit"){
-                        print("Adding New Habit")
+                        self.showAddHabit.toggle()
                     }.foregroundColor(.blue)
                     Spacer()
                 }
             }
         .navigationBarTitle("Habits")
             .navigationBarItems(leading: EditButton())
+            .sheet(isPresented: $showAddHabit){
+                AddHabit(habitList: self.habitList)
+            }
         }
+
     }
 }
 

@@ -9,6 +9,28 @@
 import Foundation
 
 
-class HabitList: ObservableObject {
-    @Published var list = [Habit]()
+class HabitList: ObservableObject{
+    
+    init() {
+        if let list = UserDefaults.standard.data(forKey: "list") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([Habit].self, from: list) {
+                self.list = decoded
+                return
+            }
+        }
+
+        self.list = []
+    }
+    
+    @Published var list: [Habit] {
+    didSet {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(list) {
+            UserDefaults.standard.set(encoded, forKey: "list")
+        }
+    }
+    }
+    
+
 }

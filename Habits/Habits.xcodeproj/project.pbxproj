@@ -15,6 +15,7 @@
 		3FEA7A4E24D944E300818BC9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FEA7A4C24D944E300818BC9 /* LaunchScreen.storyboard */; };
 		3FEA7A5624D9451A00818BC9 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA7A5524D9451A00818BC9 /* Habit.swift */; };
 		3FEA7A5A24D94CA800818BC9 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA7A5924D94CA800818BC9 /* File.swift */; };
+		3FEA7A5C24D96E8600818BC9 /* AddHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA7A5B24D96E8600818BC9 /* AddHabit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +28,8 @@
 		3FEA7A4D24D944E300818BC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FEA7A4F24D944E300818BC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FEA7A5524D9451A00818BC9 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
-		3FEA7A5924D94CA800818BC9 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = Habits/File.swift; sourceTree = "<group>"; };
+		3FEA7A5924D94CA800818BC9 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		3FEA7A5B24D96E8600818BC9 /* AddHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +46,6 @@
 		3FEA7A3524D944E300818BC9 = {
 			isa = PBXGroup;
 			children = (
-				3FEA7A5924D94CA800818BC9 /* File.swift */,
 				3FEA7A4024D944E300818BC9 /* Habits */,
 				3FEA7A3F24D944E300818BC9 /* Products */,
 			);
@@ -61,10 +62,12 @@
 		3FEA7A4024D944E300818BC9 /* Habits */ = {
 			isa = PBXGroup;
 			children = (
+				3FEA7A5924D94CA800818BC9 /* File.swift */,
 				3FEA7A4124D944E300818BC9 /* AppDelegate.swift */,
 				3FEA7A5524D9451A00818BC9 /* Habit.swift */,
 				3FEA7A4324D944E300818BC9 /* SceneDelegate.swift */,
 				3FEA7A4524D944E300818BC9 /* ContentView.swift */,
+				3FEA7A5B24D96E8600818BC9 /* AddHabit.swift */,
 				3FEA7A4724D944E300818BC9 /* Assets.xcassets */,
 				3FEA7A4C24D944E300818BC9 /* LaunchScreen.storyboard */,
 				3FEA7A4F24D944E300818BC9 /* Info.plist */,
@@ -154,6 +157,7 @@
 			files = (
 				3FEA7A5A24D94CA800818BC9 /* File.swift in Sources */,
 				3FEA7A4224D944E300818BC9 /* AppDelegate.swift in Sources */,
+				3FEA7A5C24D96E8600818BC9 /* AddHabit.swift in Sources */,
 				3FEA7A4424D944E300818BC9 /* SceneDelegate.swift in Sources */,
 				3FEA7A5624D9451A00818BC9 /* Habit.swift in Sources */,
 				3FEA7A4624D944E300818BC9 /* ContentView.swift in Sources */,

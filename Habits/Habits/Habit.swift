@@ -8,11 +8,13 @@
 
 import Foundation
 
-struct Habit: Identifiable {
+struct Habit: Identifiable, Encodable, Decodable {
     let id = UUID()
     let emoji: String
     var name: String
     var category: String
     var count: Int = 0
     var target: Int = 0
+    
+    static var category = ["Software Developer", "Fitness Goals", "Mindfulness"]
 }
