@@ -25,7 +25,12 @@ struct HabitDetail: View {
         VStack{
             ZStack{
                 Circle()
-                    .fill(RadialGradient(gradient: Gradient(colors: [.red, .orange]), center: .center, startRadius: 100, endRadius: 200))
+                    .fill(withAnimation{
+                        Double(habitList.list[habitNo].count)/Double(habitList.list[habitNo].target) >= 0.5 ?
+                            RadialGradient(gradient: Gradient(colors: [.red, .orange, .green]), center: .center, startRadius: 50, endRadius: 200) :
+                        RadialGradient(gradient: Gradient(colors: [.red, .orange]), center: .center, startRadius: 100, endRadius: 200)
+                        } )
+                    .animation(Animation.easeInOut(duration: 5))
                     .padding()
                 VStack{
                     Text(habitList.list[habitNo].name)
