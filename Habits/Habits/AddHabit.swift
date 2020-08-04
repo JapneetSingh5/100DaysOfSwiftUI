@@ -59,7 +59,7 @@ struct AddHabit: View {
                 
                 Button("Save"){
                     self.habitList.list.append(
-                        Habit(emoji: self.emoji, name: self.name, category: Habit.category[self.category], count: self.count, target: self.target))
+                        Habit( name: self.name, category: Habit.category[self.category], count: self.count, target: self.target))
                     self.presentationMode.wrappedValue.dismiss()
                 }
                 Button("Cancel"){

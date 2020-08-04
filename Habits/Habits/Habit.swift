@@ -10,11 +10,18 @@ import Foundation
 
 struct Habit: Identifiable, Encodable, Decodable {
     let id = UUID()
-    let emoji: String
+    let emoji: String = ""
     var name: String
     var category: String
     var count: Int = 0
     var target: Int = 0
     
     static var category = ["Software Developer", "Fitness Goals", "Mindfulness"]
+    
+    init(name: String, category: String, count: Int, target: Int){
+        self.name = name
+        self.count = count
+        self.target = target
+        self.category = category
+    }
 }

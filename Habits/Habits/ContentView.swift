@@ -19,21 +19,22 @@ struct ContentView: View {
         NavigationView{
             List{
                 
-                ForEach(habitList.list){ habit in
-                    NavigationLink(destination: Text("Detailed Habit")){
+                ForEach(0..<habitList.list.count, id:\.self){ habitNo in
+                    NavigationLink( destination:
+                    HabitDetail(habitList: self.habitList, habitNo: habitNo)){
                         HStack {
-                            Text(habit.emoji)
+                            Text(self.habitList.list[habitNo].emoji)
                             VStack(alignment: .leading){
-                                Text(habit.name)
+                                Text(self.habitList.list[habitNo].name)
                                     .font(.headline)
-                                Text(habit.category)
+                                Text(self.habitList.list[habitNo].category)
                                     .font(.subheadline)
                             }
                             Spacer()
                             Spacer()
                             VStack{
-                                Text("\(habit.count) Days").font(.title)
-                                Text("of \(habit.target) Days").font(.caption)
+                                Text("\(self.habitList.list[habitNo].count) Days").font(.title)
+                                Text("of \(self.habitList.list[habitNo].target) Days").font(.caption)
                             }
                         }.padding(.leading, 10).padding(.trailing, 10)
                     }
