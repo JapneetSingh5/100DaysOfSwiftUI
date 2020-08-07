@@ -8,53 +8,74 @@
 
 import SwiftUI
 
-class User: ObservableObject, Codable {
-    @Published var name = "Paul Hudson"
-    
-    enum CodingKeys: CodingKey {
-        case name
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-    }
-}
-
-struct Response: Codable {
-    var results: [Result]
-}
-
-struct Result: Codable {
-    var trackId: Int
-    var trackName: String
-    var collectionName: String
-}
+//class User: ObservableObject, Codable {
+//    @Published var name = "Paul Hudson"
+//
+//    enum CodingKeys: CodingKey {
+//        case name
+//    }
+//
+//    required init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        name = try container.decode(String.self, forKey: .name)
+//    }
+//
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(name, forKey: .name)
+//    }
+//}
+//
+//struct Response: Codable {
+//    var results: [Result]
+//}
+//
+//struct Result: Codable {
+//    var trackId: Int
+//    var trackName: String
+//    var collectionName: String
+//}
 
 struct ContentView: View {
-    @State private var username = ""
-    @State private var email = ""
+    @ObservedObject var order = Order()
 
     var body: some View {
-        Form {
-            Section {
-                TextField("Username", text: $username)
-                TextField("Email", text: $email)
-            }
-
-            Section {
-                Button("Create account") {
-                    print("Creating account…")
+        NavigationView{
+            Form {
+                Section{
+                    
+                    Picker(selection: $order.type, label: Text("Select your cake")){
+                        ForEach(0..<Order.types.count, id:\.self){
+                            Text(Order.types[$0])
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    
+                    Stepper("Number of cakes: \(order.quantity)", value: $order.quantity, in: 3...20)
                 }
-                .disabled(username.isEmpty || email.isEmpty)
+                
+                Section{
+                    Toggle(isOn: $order.specialRequestEnabled.animation()){
+                        Text("Any special requests? ")
+                    }
+                    
+                    if(order.specialRequestEnabled){
+                        Toggle(isOn: $order.extraFrosting){
+                            Text("Add extra frosting")
+                        }
+                        Toggle(isOn: $order.addSprinkles){
+                            Text("Add extra sprinkles")
+                        }
+                    }
+                }
+                
+                Section{
+                    NavigationLink(destination: AddressView(order: order)){
+                        Text("Delivery Details")
+                    }
+                }
             }
-            
-
+        .navigationBarTitle("Cupcake Corner")
         }
     }
 }
