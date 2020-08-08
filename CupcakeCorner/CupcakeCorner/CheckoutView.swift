@@ -12,6 +12,7 @@ struct CheckoutView: View {
     @ObservedObject var order: Order
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
+    @State private var title = "Thankyou!"
     
     func placeOrder() {
         
@@ -29,14 +30,23 @@ struct CheckoutView: View {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 print("No data in response: \(error?.localizedDescription ?? "Unknown error").")
+                self.confirmationMessage = "Unable to connect, please check your network connection"
+                self.title = "Network Error"
+                self.showingConfirmation = true
                 return
             }
+            
             if let decodedOrder = try? JSONDecoder().decode(Order.self, from: data) {
                 self.confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
                 self.showingConfirmation = true
             } else {
                 print("Invalid response from server")
+                self.confirmationMessage = "Unable to connect, please check your network connection"
+                self.showingConfirmation = true
             }
+            
+
+            
         }.resume()
     }
 
@@ -60,7 +70,7 @@ struct CheckoutView: View {
             }
         }
         .alert(isPresented: $showingConfirmation) {
-            Alert(title: Text("Thank you!"), message: Text(confirmationMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text(title), message: Text(confirmationMessage), dismissButton: .default(Text("OK")))
         }
         .navigationBarTitle("Check out", displayMode: .inline)
     }
