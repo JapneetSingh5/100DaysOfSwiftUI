@@ -44,12 +44,14 @@ struct ContentView: View {
             Form {
                 Section{
                     
-                    Picker(selection: $order.type, label: Text("Select your cake")){
+                    Picker(selection: $order.type.animation(), label: Text("Select your cake")){
                         ForEach(0..<Order.types.count, id:\.self){
                             Text(Order.types[$0])
+                                .fontWeight(.medium)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    
                     
                     Stepper("Number of cakes: \(order.quantity)", value: $order.quantity, in: 3...20)
                 }
