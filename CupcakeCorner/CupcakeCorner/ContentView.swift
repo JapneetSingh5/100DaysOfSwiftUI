@@ -37,14 +37,14 @@ import SwiftUI
 //}
 
 struct ContentView: View {
-    @ObservedObject var order = Order()
+    @ObservedObject var order = OrderClass()
 
     var body: some View {
         NavigationView{
             Form {
                 Section{
                     
-                    Picker(selection: $order.type.animation(), label: Text("Select your cake")){
+                    Picker(selection: $order.order.type.animation(), label: Text("Select your cake")){
                         ForEach(0..<Order.types.count, id:\.self){
                             Text(Order.types[$0])
                                 .fontWeight(.medium)
@@ -53,19 +53,19 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     
                     
-                    Stepper("Number of cakes: \(order.quantity)", value: $order.quantity, in: 3...20)
+                    Stepper("Number of cakes: \(order.order.quantity)", value: $order.order.quantity, in: 3...20)
                 }
                 
                 Section{
-                    Toggle(isOn: $order.specialRequestEnabled.animation()){
+                    Toggle(isOn: $order.order.specialRequestEnabled.animation()){
                         Text("Any special requests? ")
                     }
                     
-                    if(order.specialRequestEnabled){
-                        Toggle(isOn: $order.extraFrosting){
+                    if(order.order.specialRequestEnabled){
+                        Toggle(isOn: $order.order.extraFrosting){
                             Text("Add extra frosting")
                         }
-                        Toggle(isOn: $order.addSprinkles){
+                        Toggle(isOn: $order.order.addSprinkles){
                             Text("Add extra sprinkles")
                         }
                     }
