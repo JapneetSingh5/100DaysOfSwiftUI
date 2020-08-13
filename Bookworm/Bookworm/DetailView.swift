@@ -16,6 +16,12 @@ struct DetailView: View {
     @State private var showingDeleteAlert = false
     let book: Book
     
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter
+    }
+    
     func deleteBook() {
         moc.delete(book)
 
@@ -28,10 +34,12 @@ struct DetailView: View {
         GeometryReader { geometry in
             VStack {
                 ZStack(alignment: .bottomTrailing) {
-                    Image(self.book.genre ?? "Fantasy")
+                    Image((self.book.genre == "" ? "default" : self.book.genre)! )
+                    .resizable()
+                    .scaledToFit()
                         .frame(maxWidth: geometry.size.width)
 
-                    Text(self.book.genre?.uppercased() ?? "FANTASY")
+                    Text((self.book.genre == "" ? "Unknown".uppercased() : self.book.genre?.uppercased())!)
                         .font(.caption)
                         .fontWeight(.black)
                         .padding(8)
@@ -44,6 +52,10 @@ struct DetailView: View {
                 Text(self.book.author ?? "Unknown author")
                     .font(.title)
                     .foregroundColor(.secondary)
+                
+                Text("Finished reading on \(self.book.date ?? Date(), formatter: self.dateFormatter)")
+                    .padding(.top, 10)
+                    .font(.subheadline)
 
                 Text(self.book.review ?? "No review")
                     .padding()
