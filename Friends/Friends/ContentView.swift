@@ -43,7 +43,8 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
                 List(users){user in
-                    NavigationLink(destination: Text("\(user.name)")){
+//                    print(user)
+                    NavigationLink(destination: DetailView(user: user, users: self.users)){
                         HStack{
                             Circle()
                                 .frame(width: 15, height: 15, alignment: .center)

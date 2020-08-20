@@ -20,4 +20,5 @@ struct User: Codable, Identifiable {
     var registered: String
     var tags: [String]
     var friends: [Friend]
+
 }
