@@ -11,8 +11,8 @@ import SwiftUI
 struct FilteredList: View {
     var fetchRequest: FetchRequest<Country>
     
-    init(sort: [NSSortDescriptor]) {
-        fetchRequest = FetchRequest<Country>(entity: Country.entity(), sortDescriptors: sort)
+    init(sort: [NSSortDescriptor], predicate: String?) {
+        fetchRequest = FetchRequest<Country>(entity: Country.entity(), sortDescriptors: sort, predicate: predicate == nil ? nil : NSPredicate(format: "\(#keyPath(Country.fullName)) BEGINSWITH %@", predicate!))
     }
     
     
@@ -35,6 +35,6 @@ struct FilteredList: View {
 
 struct FilteredList_Previews: PreviewProvider {
     static var previews: some View {
-        FilteredList(sort: [NSSortDescriptor]())
+        FilteredList(sort: [NSSortDescriptor](), predicate: "U")
     }
 }

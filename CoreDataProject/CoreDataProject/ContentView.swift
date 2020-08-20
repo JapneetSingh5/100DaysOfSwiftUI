@@ -12,11 +12,17 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State var sort: [NSSortDescriptor]
+    @State var predicate: String? = nil
+    
+    enum filter : String {
+        case U = "U"
+        case S = "S"
+    }
 
     var body: some View {
                 
         VStack{
-                        FilteredList(sort: self.sort)
+            FilteredList(sort: self.sort, predicate: self.predicate)
                         
             VStack{
                             Button("Add") {
@@ -59,13 +65,18 @@ struct ContentView: View {
             }
 
                     
-//                        Button("Sort by Candy Name, ASC"){
-//                            self.sort = [NSSortDescriptor(keyPath: \Candy.wrappedName, ascending: true)]
-//                        }
-//
-//                        Button("Sort by Candy Name, DESC"){
-//                            self.sort = [NSSortDescriptor(keyPath: \Candy.wrappedName, ascending: false)]
-//                        }
+                        Button("Filter name, U"){
+                            self.predicate = filter.U.rawValue
+                        }
+
+                        Button("Filter name, S"){
+                            self.predicate = filter.S.rawValue
+                        }
+            
+                        Button("Remove filter"){
+                            self.predicate = nil
+                        }
+            
         }
     }
 }
