@@ -1,15 +1,15 @@
 //
-//  User.swift
-//  Friends
+//  TempUser.swift
+//  FriendsCoreData
 //
-//  Created by Japneet Singh on /208/20.
+//  Created by Japneet Singh on /228/20.
 //  Copyright © 2020 Japneet Singh. All rights reserved.
 //
 
 import Foundation
 
-struct User: Codable, Identifiable {
-    var id: String 
+struct TempUser: Codable, Identifiable {
+    var id: String
     var isActive: Bool
     var name: String
     var age: Int
@@ -19,6 +19,6 @@ struct User: Codable, Identifiable {
     var about: String
     var registered: String
     var tags: [String]
-    var friends: [Friend]
+    var friends: [TempFriend]
 
 }
