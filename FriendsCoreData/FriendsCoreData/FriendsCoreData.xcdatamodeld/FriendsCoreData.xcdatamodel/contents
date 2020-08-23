@@ -3,7 +3,7 @@
     <entity name="Friend" representedClassName="Friend" syncable="YES">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends" inverseEntity="User"/>
+        <relationship name="friendList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="friends" inverseEntity="User"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -29,7 +29,7 @@
         <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="registered" optional="YES" attributeType="String"/>
-        <relationship name="friends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Friend" inverseName="user" inverseEntity="Friend"/>
+        <relationship name="friends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Friend" inverseName="friendList" inverseEntity="Friend"/>
         <relationship name="userTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="tags" inverseEntity="Tag"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -38,8 +38,8 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="User" positionX="-63" positionY="-18" width="128" height="208"/>
-        <element name="Friend" positionX="-54" positionY="63" width="128" height="88"/>
+        <element name="Friend" positionX="-232.765625" positionY="-209.8828125" width="128" height="88"/>
         <element name="Tag" positionX="-36" positionY="72" width="128" height="73"/>
+        <element name="User" positionX="-485.015625" positionY="-68.65234375" width="128" height="208"/>
     </elements>
 </model>

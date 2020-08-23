@@ -54,7 +54,7 @@ extension User{
     public var wrappedFriends: [Friend]{
         let set = friends as? Set<Friend> ?? []
         return set.sorted{
-            $0.wrappedName < $1.wrappedName
+            $0.wrappedId < $1.wrappedId
         }
     }
     

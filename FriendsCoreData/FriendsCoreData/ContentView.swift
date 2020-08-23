@@ -7,9 +7,10 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
-    @FetchRequest(entity: User.entity(), sortDescriptors: [], predicate: nil) var users: FetchedResults<User>
+    @FetchRequest(entity: User.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \User.name, ascending: true)], predicate: nil) var users: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @State private var tempUsers = [TempUser]()
     
@@ -46,22 +47,21 @@ struct ContentView: View {
                                 for tag in user.tags{
                                     let createTag = Tag(context: self.moc)
                                     createTag.tag = tag
-                                    createUser.userTags?.adding(createTag)
+                                    createUser.addToUserTags(createTag)
                                 }
                                 
                                 for friend in user.friends{
                                     let createFriend = Friend(context: self.moc)
-                                    createFriend.name = friend.name
                                     createFriend.id = friend.id
-                                    createUser.friends?.adding(createFriend)
+                                    createFriend.name = friend.name
+                                    createUser.addToFriends(createFriend)
                                 }
+                                
                             }
                             
                             if self.moc.hasChanges{
                                 try? self.moc.save()
                             }
-                            
-                            print(self.tempUsers[0])
                         }
                 }
                 catch{
@@ -74,14 +74,32 @@ struct ContentView: View {
     }
     
     var body: some View {
-        List(users, id:\.self.id){ user in
-            Text(user.wrappedName)
-        }
-        .onAppear(perform: loadData)
+        NavigationView{
+            List(users, id:\.self){user in
+                NavigationLink(destination: DetailView(user: user)){
+                        HStack{
+                            Circle()
+                                .frame(width: 15, height: 15, alignment: .center)
+                                .foregroundColor(user.isActive ? .green : .red)
+                        }
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("\(user.wrappedName)").fontWeight(.medium)
+                                Text("\(user.age)").fontWeight(.light).font(.subheadline)
+                            }
+                            Text("\(user.wrappedFriends.count) Friends")
+                        }
+                    }
+                }
+                 .onAppear(perform: loadData)
+                .navigationBarTitle("Friends")
+                }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    
     static var previews: some View {
         ContentView()
     }

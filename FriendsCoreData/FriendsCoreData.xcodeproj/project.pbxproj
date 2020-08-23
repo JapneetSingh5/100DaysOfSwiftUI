@@ -22,6 +22,8 @@
 		3F1743F124F1926D003AAC6C /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1743EB24F1926D003AAC6C /* Friend+CoreDataProperties.swift */; };
 		3F1743F324F19721003AAC6C /* TempUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1743F224F19721003AAC6C /* TempUser.swift */; };
 		3F1743F524F1974E003AAC6C /* TempFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1743F424F1974E003AAC6C /* TempFriend.swift */; };
+		3F1743F924F27479003AAC6C /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1743F824F27479003AAC6C /* Friends.swift */; };
+		3FC91F8024F28440006DFE3A /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC91F7F24F28440006DFE3A /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		3F1743EB24F1926D003AAC6C /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3F1743F224F19721003AAC6C /* TempUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempUser.swift; sourceTree = "<group>"; };
 		3F1743F424F1974E003AAC6C /* TempFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempFriend.swift; sourceTree = "<group>"; };
+		3F1743F824F27479003AAC6C /* Friends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
+		3FC91F7F24F28440006DFE3A /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,8 @@
 				3F1743CF24F18F4C003AAC6C /* AppDelegate.swift */,
 				3F1743D124F18F4C003AAC6C /* SceneDelegate.swift */,
 				3F1743D624F18F4C003AAC6C /* ContentView.swift */,
+				3FC91F7F24F28440006DFE3A /* DetailView.swift */,
+				3F1743F824F27479003AAC6C /* Friends.swift */,
 				3F1743D824F18F4D003AAC6C /* Assets.xcassets */,
 				3F1743DD24F18F4D003AAC6C /* LaunchScreen.storyboard */,
 				3F1743E024F18F4D003AAC6C /* Info.plist */,
@@ -174,7 +180,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F1743EC24F1926D003AAC6C /* Tag+CoreDataClass.swift in Sources */,
+				3F1743F924F27479003AAC6C /* Friends.swift in Sources */,
 				3F1743D024F18F4C003AAC6C /* AppDelegate.swift in Sources */,
+				3FC91F8024F28440006DFE3A /* DetailView.swift in Sources */,
 				3F1743EF24F1926D003AAC6C /* User+CoreDataProperties.swift in Sources */,
 				3F1743ED24F1926D003AAC6C /* Tag+CoreDataProperties.swift in Sources */,
 				3F1743F024F1926D003AAC6C /* Friend+CoreDataClass.swift in Sources */,
