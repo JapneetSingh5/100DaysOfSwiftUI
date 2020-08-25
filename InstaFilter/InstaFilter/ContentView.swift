@@ -16,9 +16,10 @@ struct ContentView: View {
     @State private var backgroundColor = Color.white
     @State private var image:  Image?
     @State private var twirlAmount: Double = 0
+    @State private var showingImagePicker = false
 
     var body: some View {
-        var twirl = Binding<Double>(
+        let twirl = Binding<Double>(
             get:{
                 self.twirlAmount
             },
@@ -34,8 +35,21 @@ struct ContentView: View {
             .drawingGroup()
             Slider(value: twirl, in: 0...1000)
             .padding()
-        }
             
+            Button("Select Image"){
+                self.showingImagePicker = true
+            }
+            .font(.headline)
+            .frame(width: 200, height: 30)
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+        .clipShape(Capsule())
+            
+        }
+        .sheet(isPresented: $showingImagePicker){
+            ImagePicker()
+        }
         .onAppear(perform: loadImage)
     }
     
