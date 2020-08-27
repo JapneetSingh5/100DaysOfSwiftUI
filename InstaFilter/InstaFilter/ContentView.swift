@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var image:  Image?
     @State private var twirlAmount: Double = 0
     @State private var showingImagePicker = false
+    @State private var inputImage: UIImage? = UIImage(named: "Example")
+    @State private var outputImage: UIImage? = UIImage(named: "Example")
 
     var body: some View {
         let twirl = Binding<Double>(
@@ -45,17 +47,30 @@ struct ContentView: View {
             .background(Color.blue)
             .foregroundColor(.white)
         .clipShape(Capsule())
+            .padding()
+            
+            Button("Save Image"){
+                let imageSaver = ImageSaver()
+                imageSaver.writeToPhotoAlbum(image: self.outputImage!)
+            }
+            .font(.headline)
+            .frame(width: 200, height: 30)
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+        .clipShape(Capsule())
             
         }
-        .sheet(isPresented: $showingImagePicker){
-            ImagePicker()
+        .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
+            ImagePicker(image: self.$inputImage)
         }
         .onAppear(perform: loadImage)
     }
     
     func loadImage(){
         
-        guard let inputImage = UIImage(named: "Example") else {return}
+        guard let inputImage = inputImage else { return }
+        image = Image(uiImage: inputImage)
         
         let beginImage = CIImage(image: inputImage)
         
@@ -69,6 +84,7 @@ struct ContentView: View {
         
         if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
             let uiImage = UIImage(cgImage: cgimg)
+            self.outputImage = uiImage
             image = Image(uiImage: uiImage)
         }
     }
@@ -77,5 +93,15 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+class ImageSaver: NSObject {
+    func writeToPhotoAlbum(image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveError), nil)
+    }
+
+    @objc func saveError(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        print("Save finished!")
     }
 }
