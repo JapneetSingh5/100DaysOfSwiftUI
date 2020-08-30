@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F1F6CF524FC2E6B000970D1 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1F6CF424FC2E6B000970D1 /* ImagePicker.swift */; };
 		3FAB267A24F411ED008E6D08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB267924F411ED008E6D08 /* AppDelegate.swift */; };
 		3FAB267C24F411ED008E6D08 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB267B24F411ED008E6D08 /* SceneDelegate.swift */; };
 		3FAB267F24F411ED008E6D08 /* InstaFilter.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB267D24F411ED008E6D08 /* InstaFilter.xcdatamodeld */; };
@@ -14,10 +15,10 @@
 		3FAB268324F411EE008E6D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FAB268224F411EE008E6D08 /* Assets.xcassets */; };
 		3FAB268624F411EE008E6D08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FAB268524F411EE008E6D08 /* Preview Assets.xcassets */; };
 		3FAB268924F411EE008E6D08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FAB268724F411EE008E6D08 /* LaunchScreen.storyboard */; };
-		3FAB269124F57B5A008E6D08 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB269024F57B5A008E6D08 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F1F6CF424FC2E6B000970D1 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		3FAB267624F411ED008E6D08 /* InstaFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FAB267924F411ED008E6D08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FAB267B24F411ED008E6D08 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,7 +28,6 @@
 		3FAB268524F411EE008E6D08 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3FAB268824F411EE008E6D08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FAB268A24F411EE008E6D08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3FAB269024F57B5A008E6D08 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 				3FAB267924F411ED008E6D08 /* AppDelegate.swift */,
 				3FAB267B24F411ED008E6D08 /* SceneDelegate.swift */,
 				3FAB268024F411ED008E6D08 /* ContentView.swift */,
-				3FAB269024F57B5A008E6D08 /* ImagePicker.swift */,
+				3F1F6CF424FC2E6B000970D1 /* ImagePicker.swift */,
 				3FAB268224F411EE008E6D08 /* Assets.xcassets */,
 				3FAB268724F411EE008E6D08 /* LaunchScreen.storyboard */,
 				3FAB268A24F411EE008E6D08 /* Info.plist */,
@@ -154,7 +154,7 @@
 			files = (
 				3FAB267A24F411ED008E6D08 /* AppDelegate.swift in Sources */,
 				3FAB267F24F411ED008E6D08 /* InstaFilter.xcdatamodeld in Sources */,
-				3FAB269124F57B5A008E6D08 /* ImagePicker.swift in Sources */,
+				3F1F6CF524FC2E6B000970D1 /* ImagePicker.swift in Sources */,
 				3FAB268124F411ED008E6D08 /* ContentView.swift in Sources */,
 				3FAB267C24F411ED008E6D08 /* SceneDelegate.swift in Sources */,
 			);

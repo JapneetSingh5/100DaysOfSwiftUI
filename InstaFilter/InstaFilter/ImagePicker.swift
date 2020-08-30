@@ -2,37 +2,15 @@
 //  ImagePicker.swift
 //  InstaFilter
 //
-//  Created by Japneet Singh on /258/20.
+//  Created by Japneet Singh on /318/20.
 //  Copyright © 2020 Japneet Singh. All rights reserved.
 //
 
 import SwiftUI
 
-struct ImagePicker : UIViewControllerRepresentable{
-    @Binding var image: UIImage?
+struct ImagePicker: UIViewControllerRepresentable{
     @Environment(\.presentationMode) var presentationMode
-    
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-        
-        var parent: ImagePicker
-        
-        init(_ parent: ImagePicker) {
-            self.parent = parent
-        }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
-            }
-
-            parent.presentationMode.wrappedValue.dismiss()
-        }
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
+    @Binding var image: UIImage?
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
@@ -40,7 +18,27 @@ struct ImagePicker : UIViewControllerRepresentable{
         return picker
     }
     
-    
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
+    }
+    
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+        let parent: ImagePicker
+        
+        init(_ parent: ImagePicker){
+            self.parent = parent
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let uiImage = info[.originalImage] as? UIImage {
+                parent.image = uiImage
+            }
+            
+            parent.presentationMode.wrappedValue.dismiss()
+        }
+        
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 }

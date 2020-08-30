@@ -11,81 +11,94 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 
 struct ContentView: View {
-    @State private var blurAmount: CGFloat = 0
-    @State private var showingActionSheet = false
-    @State private var backgroundColor = Color.white
-    @State private var image:  Image?
-    @State private var twirlAmount: Double = 0
+    @State private var image: Image?
+    @State private var filterIntensity = 0.5
     @State private var showingImagePicker = false
-    @State private var inputImage: UIImage? = UIImage(named: "Example")
-    @State private var outputImage: UIImage? = UIImage(named: "Example")
-
-    var body: some View {
-        let twirl = Binding<Double>(
-            get:{
-                self.twirlAmount
-            },
-            set:{
-                self.twirlAmount = $0
-                self.loadImage()
-            }
-        )
-        return VStack {
-            image?
-            .resizable()
-            .scaledToFit()
-            .drawingGroup()
-            Slider(value: twirl, in: 0...1000)
-            .padding()
-            
-            Button("Select Image"){
-                self.showingImagePicker = true
-            }
-            .font(.headline)
-            .frame(width: 200, height: 30)
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-        .clipShape(Capsule())
-            .padding()
-            
-            Button("Save Image"){
-                let imageSaver = ImageSaver()
-                imageSaver.writeToPhotoAlbum(image: self.outputImage!)
-            }
-            .font(.headline)
-            .frame(width: 200, height: 30)
-            .padding()
-            .background(Color.green)
-            .foregroundColor(.white)
-        .clipShape(Capsule())
-            
-        }
-        .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
-            ImagePicker(image: self.$inputImage)
-        }
-        .onAppear(perform: loadImage)
-    }
+    @State private var inputImage: UIImage?
+    @State private var currentFilter = CIFilter.sepiaTone()
+    let context = CIContext()
     
     func loadImage(){
-        
-        guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
+        guard let inputImage = inputImage else {return}
         
         let beginImage = CIImage(image: inputImage)
-        
-        let context = CIContext()
-        
-        guard let currentFilter = CIFilter(name: "CITwirlDistortion") else { return }
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
-        currentFilter.setValue(self.twirlAmount, forKey: kCIInputRadiusKey)
-        currentFilter.setValue(CIVector(x: inputImage.size.width/2 , y: inputImage.size.height/2), forKey: kCIInputCenterKey)
+        applyProcessing()
+    }
+    
+    func applyProcessing(){
+        currentFilter.intensity = Float(self.filterIntensity)
+        
         guard let outputImage = currentFilter.outputImage else {return}
         
         if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
             let uiImage = UIImage(cgImage: cgimg)
-            self.outputImage = uiImage
-            image = Image(uiImage: uiImage)
+            self.image = Image(uiImage: uiImage)
+        }
+    }
+    
+    var body: some View {
+        
+        let intensity = Binding<Double>(
+            get: {
+                self.filterIntensity
+        },
+            set: {
+                self.filterIntensity = $0
+                self.applyProcessing()
+        })
+        
+        return NavigationView{
+            VStack{
+                
+                ZStack{
+                    Rectangle()
+                        .fill(image==nil ? Color.secondary : Color.black.opacity(0))
+                        .cornerRadius(20)
+                    if image != nil {
+                        image!
+                        .resizable()
+                        .scaledToFit()
+                    } else {
+                        Text("Tap to select a picture")
+                            .font(.title)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding()
+                .onTapGesture {
+                    self.showingImagePicker.toggle()
+                }
+                .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
+                    ImagePicker(image: self.$inputImage)
+                }
+                
+                HStack{
+                    Text("Intensity")
+                        .foregroundColor(self.image == nil ? Color.secondary : Color.primary)
+                    Slider(value: intensity, in: 0...1)
+                }
+                .disabled(self.image == nil)
+                .padding()
+                
+                HStack{
+                    
+                    Button("Change Filter"){
+                        //Change the filter
+                    }
+                    Spacer()
+                    Button("Save Image"){
+                        //Save the image
+                    }
+                }
+            .padding()
+                
+                
+            }
+            .padding(.bottom)
+            .padding(.top)
+        .navigationBarTitle("InstaFilter")
         }
     }
 }
@@ -96,12 +109,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-class ImageSaver: NSObject {
-    func writeToPhotoAlbum(image: UIImage) {
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveError), nil)
-    }
-
-    @objc func saveError(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        print("Save finished!")
-    }
-}
