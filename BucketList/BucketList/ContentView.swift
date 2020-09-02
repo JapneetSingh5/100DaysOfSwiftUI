@@ -7,12 +7,38 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 
 struct ContentView: View {
     let users = [
 User(firstName: "Japneet", lastName: "Singh"),
 User(firstName: "Jasper", lastName: "Singh")
     ].sorted()
+    
+    @State private var isUnlocked = false
+    
+    func authenticate(){
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error){
+            let reason = "We need to unlock your data"
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason){ success, authenticationError in
+                
+                DispatchQueue.main.async {
+                    if success{
+                        self.isUnlocked = true
+                    }else{
+                        //probs
+                    }
+                }
+                
+            }
+        }else{
+            //no biometrics
+        }
+    }
     
     func getDocumentsDirectory() -> URL {
         // find all possible documents directories for this user
@@ -24,10 +50,16 @@ User(firstName: "Jasper", lastName: "Singh")
     
     var body: some View {
         VStack{
-            List(users){user in
-            Text("\(user.firstName) \(user.lastName)")
-        }
-            Text("Hello World")
+            if self.isUnlocked {
+                Text("Unlocked")
+            } else {
+                Text("Locked")
+            }
+//            List(users){user in
+//            Text("\(user.firstName) \(user.lastName)")
+//        }
+            MapView()
+            .edgesIgnoringSafeArea(.all)
             .onTapGesture {
                 let str = "Test Message"
                 let url = self.getDocumentsDirectory().appendingPathComponent("message.txt")
@@ -41,6 +73,7 @@ User(firstName: "Jasper", lastName: "Singh")
                 }
             }
         }
+    .onAppear(perform: authenticate)
     }
 }
 
