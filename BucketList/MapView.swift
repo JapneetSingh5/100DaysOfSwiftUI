@@ -10,6 +10,11 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
+    
+    @Binding var centerCoordinate: CLLocationCoordinate2D
+    @Binding var selectedPlace: MKPointAnnotation?
+    @Binding var showingPlaceDetails: Bool
+    var annotations: [MKPointAnnotation]
    
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -25,7 +30,10 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ view: MKMapView, context: Context) {
-        //
+        if annotations.count != view.annotations.count {
+            view.removeAnnotations(view.annotations)
+            view.addAnnotations(annotations)
+        }
     }
     
     class Coordinator: NSObject, MKMapViewDelegate {
@@ -36,16 +44,39 @@ struct MapView: UIViewRepresentable {
         }
         
         func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-            print(mapView.centerCoordinate)
+            parent.centerCoordinate = mapView.centerCoordinate
+        }
+        
+        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+                guard let placemark = view.annotation as? MKPointAnnotation else { return }
+
+            parent.selectedPlace = placemark
+            parent.showingPlaceDetails = true
         }
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
-            view.canShowCallout = true
-            view.animatesDrop = true
-            view.pinTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-        
-            return view
+            let identifier = "Placemark"
+            //our unique identifier for view reuse
+            
+            //attempt to find a cell we can recycle
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                //we didnt find a reusable cell, so make a new one
+               annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+
+                // allow this to show pop up information
+                annotationView?.canShowCallout = true
+
+                // attach an information button to the view
+                annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+                
+            }else{
+                annotationView?.annotation = annotation
+            }
+            
+            return annotationView
+            
         }
     }
     
@@ -54,8 +85,18 @@ struct MapView: UIViewRepresentable {
     }
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
+extension MKPointAnnotation {
+    static var example: MKPointAnnotation {
+        let annotation = MKPointAnnotation()
+        annotation.title = "London"
+        annotation.subtitle = "Home to the 2012 Summer Olympics."
+        annotation.coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.13)
+        return annotation
     }
+}
+
+struct MapView_Previews: PreviewProvider {
+     static var previews: some View {
+       MapView(centerCoordinate: .constant(MKPointAnnotation.example.coordinate), selectedPlace: .constant(MKPointAnnotation.example), showingPlaceDetails: .constant(false), annotations: [MKPointAnnotation.example])
+       }
 }

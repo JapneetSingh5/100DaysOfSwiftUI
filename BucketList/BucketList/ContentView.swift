@@ -8,6 +8,7 @@
 
 import SwiftUI
 import LocalAuthentication
+import MapKit
 
 struct ContentView: View {
     let users = [
@@ -16,6 +17,10 @@ User(firstName: "Jasper", lastName: "Singh")
     ].sorted()
     
     @State private var isUnlocked = false
+    @State var centerCoordinate: CLLocationCoordinate2D
+    @State private var locations = [MKPointAnnotation]()
+    @State private var selectedPlace: MKPointAnnotation?
+    @State private var showingPlaceDetails = false
     
     func authenticate(){
         let context = LAContext()
@@ -49,36 +54,69 @@ User(firstName: "Jasper", lastName: "Singh")
     }
     
     var body: some View {
-        VStack{
-            if self.isUnlocked {
-                Text("Unlocked")
-            } else {
-                Text("Locked")
-            }
+        ZStack{
+            
+//            if self.isUnlocked {
+//                Text("Unlocked")
+//            } else {
+//                Text("Locked")
+//            }
 //            List(users){user in
 //            Text("\(user.firstName) \(user.lastName)")
 //        }
-            MapView()
+            
+            MapView(centerCoordinate: $centerCoordinate, selectedPlace: $selectedPlace, showingPlaceDetails: $showingPlaceDetails, annotations: locations)
             .edgesIgnoringSafeArea(.all)
-            .onTapGesture {
-                let str = "Test Message"
-                let url = self.getDocumentsDirectory().appendingPathComponent("message.txt")
-
-                do {
-                    try str.write(to: url, atomically: true, encoding: .utf8)
-                    let input = try String(contentsOf: url)
-                    print(input)
-                } catch {
-                    print(error.localizedDescription)
+            Circle()
+            .fill(Color.blue)
+            .opacity(0.3)
+            .frame(width: 32, height: 32)
+            VStack{
+                Spacer()
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        let newLocation = MKPointAnnotation()
+                        newLocation.coordinate = self.centerCoordinate
+                        newLocation.title = "Example Location"
+                        self.locations.append(newLocation)
+                    }){
+                        Image(systemName: "plus")
+                    }
+                    .padding()
+                    .background(Color.black.opacity(0.75))
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .clipShape(Circle())
+                    .padding(.trailing)
                 }
             }
+//            .onTapGesture {
+//                let str = "Test Message"
+//                let url = self.getDocumentsDirectory().appendingPathComponent("message.txt")
+//
+//                do {
+//                    try str.write(to: url, atomically: true, encoding: .utf8)
+//                    let input = try String(contentsOf: url)
+//                    print(input)
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//            }
         }
     .onAppear(perform: authenticate)
+        .alert(isPresented: $showingPlaceDetails) {
+            Alert(title: Text(selectedPlace?.title ?? "Unknown"), message: Text(selectedPlace?.subtitle ?? "Missing place information."), primaryButton: .default(Text("OK")), secondaryButton: .default(Text("Edit")) {
+                // edit this place
+            })
+        }
     }
 }
 
+
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(centerCoordinate: MKPointAnnotation.example.coordinate)
     }
 }
