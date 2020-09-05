@@ -21,6 +21,7 @@ User(firstName: "Jasper", lastName: "Singh")
     @State private var locations = [MKPointAnnotation]()
     @State private var selectedPlace: MKPointAnnotation?
     @State private var showingPlaceDetails = false
+    @State private var showingEditScreen = false
     
     func authenticate(){
         let context = LAContext()
@@ -80,6 +81,8 @@ User(firstName: "Jasper", lastName: "Singh")
                         newLocation.coordinate = self.centerCoordinate
                         newLocation.title = "Example Location"
                         self.locations.append(newLocation)
+                        self.selectedPlace = newLocation
+                        self.showingEditScreen = true
                     }){
                         Image(systemName: "plus")
                     }
@@ -107,8 +110,13 @@ User(firstName: "Jasper", lastName: "Singh")
     .onAppear(perform: authenticate)
         .alert(isPresented: $showingPlaceDetails) {
             Alert(title: Text(selectedPlace?.title ?? "Unknown"), message: Text(selectedPlace?.subtitle ?? "Missing place information."), primaryButton: .default(Text("OK")), secondaryButton: .default(Text("Edit")) {
-                // edit this place
+                self.showingEditScreen = true
             })
+        }
+        .sheet(isPresented: self.$showingEditScreen){
+            if self.selectedPlace != nil {
+                EditView(placemark: self.selectedPlace!)
+            }
         }
     }
 }
