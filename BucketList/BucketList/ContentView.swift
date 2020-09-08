@@ -18,8 +18,8 @@ User(firstName: "Jasper", lastName: "Singh")
     
     @State private var isUnlocked = false
     @State var centerCoordinate: CLLocationCoordinate2D
-    @State private var locations = [MKPointAnnotation]()
-    @State private var selectedPlace: MKPointAnnotation?
+    @State private var locations = [CodableMKPointAnnotation]()
+    @State private var selectedPlace: CodableMKPointAnnotation?
     @State private var showingPlaceDetails = false
     @State private var showingEditScreen = false
     
@@ -54,18 +54,32 @@ User(firstName: "Jasper", lastName: "Singh")
         return paths[0]
     }
     
+    func loadData(){
+        let filename = getDocumentsDirectory().appendingPathComponent("SavedPlaces")
+         
+        do {
+            let data = try Data(contentsOf: filename)
+            print("File found")
+            print(data.description)
+            self.locations = try JSONDecoder().decode([CodableMKPointAnnotation].self, from: data)
+            print("Data loaded")
+        } catch {
+            print("Unable to load saved data.")
+        }    }
+    
+    func saveData(){
+        do{
+            let filename = getDocumentsDirectory().appendingPathComponent("SavedPlaces")
+            let data = try JSONEncoder().encode(self.locations)
+            try data.write(to: filename, options: [.atomicWrite, .completeFileProtection])
+            print("Data saved")
+        }catch{
+            print("Unable to save data")
+        }
+    }
+    
     var body: some View {
         ZStack{
-            
-//            if self.isUnlocked {
-//                Text("Unlocked")
-//            } else {
-//                Text("Locked")
-//            }
-//            List(users){user in
-//            Text("\(user.firstName) \(user.lastName)")
-//        }
-            
             MapView(centerCoordinate: $centerCoordinate, selectedPlace: $selectedPlace, showingPlaceDetails: $showingPlaceDetails, annotations: locations)
             .edgesIgnoringSafeArea(.all)
             Circle()
@@ -77,7 +91,7 @@ User(firstName: "Jasper", lastName: "Singh")
                 HStack{
                     Spacer()
                     Button(action: {
-                        let newLocation = MKPointAnnotation()
+                        let newLocation = CodableMKPointAnnotation()
                         newLocation.coordinate = self.centerCoordinate
                         newLocation.title = "Example Location"
                         self.locations.append(newLocation)
@@ -94,26 +108,14 @@ User(firstName: "Jasper", lastName: "Singh")
                     .padding(.trailing)
                 }
             }
-//            .onTapGesture {
-//                let str = "Test Message"
-//                let url = self.getDocumentsDirectory().appendingPathComponent("message.txt")
-//
-//                do {
-//                    try str.write(to: url, atomically: true, encoding: .utf8)
-//                    let input = try String(contentsOf: url)
-//                    print(input)
-//                } catch {
-//                    print(error.localizedDescription)
-//                }
-//            }
         }
-    .onAppear(perform: authenticate)
+        .onAppear(perform: loadData)
         .alert(isPresented: $showingPlaceDetails) {
             Alert(title: Text(selectedPlace?.title ?? "Unknown"), message: Text(selectedPlace?.subtitle ?? "Missing place information."), primaryButton: .default(Text("OK")), secondaryButton: .default(Text("Edit")) {
                 self.showingEditScreen = true
             })
         }
-        .sheet(isPresented: self.$showingEditScreen){
+        .sheet(isPresented: self.$showingEditScreen, onDismiss: saveData){
             if self.selectedPlace != nil {
                 EditView(placemark: self.selectedPlace!)
             }
