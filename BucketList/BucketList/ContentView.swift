@@ -19,7 +19,7 @@ User(firstName: "Jasper", lastName: "Singh")
     @State private var isUnlocked = false
     @State var centerCoordinate: CLLocationCoordinate2D
     @State private var locations = [CodableMKPointAnnotation]()
-    @State private var selectedPlace: CodableMKPointAnnotation?
+    @State private var selectedPlace: MKPointAnnotation?
     @State private var showingPlaceDetails = false
     @State private var showingEditScreen = false
     
@@ -61,11 +61,12 @@ User(firstName: "Jasper", lastName: "Singh")
             let data = try Data(contentsOf: filename)
             print("File found")
             print(data.description)
-            self.locations = try JSONDecoder().decode([CodableMKPointAnnotation].self, from: data)
+            locations = try JSONDecoder().decode([CodableMKPointAnnotation].self, from: data)
             print("Data loaded")
         } catch {
             print("Unable to load saved data.")
-        }    }
+        }
+    }
     
     func saveData(){
         do{
