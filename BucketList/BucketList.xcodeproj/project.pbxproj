@@ -20,6 +20,7 @@
 		3F17968B2503FFE900F6170E /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F17968A2503FFE900F6170E /* EditView.swift */; };
 		3F17968F250403E400F6170E /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F17968E250403E400F6170E /* Result.swift */; };
 		3F1796912507F9B800F6170E /* MKPointAnnotation-Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1796902507F9B800F6170E /* MKPointAnnotation-Codable.swift */; };
+		3F1796932509063500F6170E /* UnlockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1796922509063500F6170E /* UnlockedView.swift */; };
 		3FC1EB9024FFE7AB009FBA72 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1EB8F24FFE7AB009FBA72 /* MapView.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		3F17968A2503FFE900F6170E /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditView.swift; path = BucketList/EditView.swift; sourceTree = "<group>"; };
 		3F17968E250403E400F6170E /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		3F1796902507F9B800F6170E /* MKPointAnnotation-Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPointAnnotation-Codable.swift"; sourceTree = "<group>"; };
+		3F1796922509063500F6170E /* UnlockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedView.swift; sourceTree = "<group>"; };
 		3FC1EB8F24FFE7AB009FBA72 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 				3F0CAE1A24FEA00200BB99FC /* AppDelegate.swift */,
 				3F0CAE1C24FEA00200BB99FC /* SceneDelegate.swift */,
 				3F0CAE2124FEA00200BB99FC /* ContentView.swift */,
+				3F1796922509063500F6170E /* UnlockedView.swift */,
 				3F0CAE3524FEBA4400BB99FC /* DirectoryManager.swift */,
 				3F0CAE2324FEA00400BB99FC /* Assets.xcassets */,
 				3F0CAE2824FEA00400BB99FC /* LaunchScreen.storyboard */,
@@ -175,6 +178,7 @@
 				3F1796912507F9B800F6170E /* MKPointAnnotation-Codable.swift in Sources */,
 				3F0CAE1B24FEA00200BB99FC /* AppDelegate.swift in Sources */,
 				3F0CAE2024FEA00200BB99FC /* BucketList.xcdatamodeld in Sources */,
+				3F1796932509063500F6170E /* UnlockedView.swift in Sources */,
 				3F0CAE2224FEA00200BB99FC /* ContentView.swift in Sources */,
 				3F17968B2503FFE900F6170E /* EditView.swift in Sources */,
 				3F17968F250403E400F6170E /* Result.swift in Sources */,
