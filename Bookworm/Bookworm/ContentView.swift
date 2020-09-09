@@ -58,6 +58,9 @@ struct ContentView: View {
                         self.showingAddScreen.toggle()
                     }) {
                         Image(systemName: "plus")
+                            .accessibility(hint: Text("Add a new book"))
+                            .accessibility(label: Text("Add"))
+                            .accessibility(removeTraits: .isImage)
                     })
                     .sheet(isPresented: $showingAddScreen) {
                         AddBookView().environment(\.managedObjectContext, self.moc)

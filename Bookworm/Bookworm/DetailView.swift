@@ -34,7 +34,7 @@ struct DetailView: View {
         GeometryReader { geometry in
             VStack {
                 ZStack(alignment: .bottomTrailing) {
-                    Image((self.book.genre == "" ? "default" : self.book.genre)! )
+                    Image(decorative: (self.book.genre == "" ? "default" : self.book.genre)! )
                     .resizable()
                     .scaledToFit()
                         .frame(maxWidth: geometry.size.width)
@@ -47,11 +47,13 @@ struct DetailView: View {
                         .background(Color.black.opacity(0.75))
                         .clipShape(Capsule())
                         .offset(x: -5, y: -5)
+                        .accessibility(label: Text("Genre: \(self.book.genre ?? "Unknown")"))
                 }
                 
                 Text(self.book.author ?? "Unknown author")
                     .font(.title)
                     .foregroundColor(.secondary)
+                    .accessibility(label: Text("Author: \(self.book.author ?? "Unknown author")"))
                 
                 Text("Finished reading on \(self.book.date ?? Date(), formatter: self.dateFormatter)")
                     .padding(.top, 10)
@@ -59,6 +61,8 @@ struct DetailView: View {
 
                 Text(self.book.review ?? "No review")
                     .padding()
+                    .accessibility(label: Text("Review"))
+                    .accessibility(hint: Text(self.book.review ?? "No Review"))
 
                 RatingView(rating: .constant(Int(self.book.rating)))
                     .font(.largeTitle)
@@ -78,6 +82,8 @@ struct DetailView: View {
         }) {
             Image(systemName: "trash")
                 .foregroundColor(.red)
+                .accessibility(label: Text("Delete"))
+                .accessibility(hint: Text("Delete this book from your records."))
         })
     }
 }
