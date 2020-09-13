@@ -51,9 +51,12 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .accessibility(label: Text("Cake flavour"))
+                    .accessibility(hint: Text("Choose the flavour of cake you want to order"))
                     
                     
                     Stepper("Number of cakes: \(order.order.quantity)", value: $order.order.quantity, in: 3...20)
+                        .accessibility(value: Text("\(order.order.quantity) Cakes"))
                 }
                 
                 Section{

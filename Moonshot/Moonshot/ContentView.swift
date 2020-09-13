@@ -49,6 +49,8 @@ struct ContentView: View {
                                         Text("\(astronautData.astronaut.name)")
                                         Text("\(astronautData.role)").foregroundColor(.secondary).font(.subheadline)
                                     }
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibility(label: Text("\(astronautData.role): \(astronautData.astronaut.name)"))
                                 }
                             }
                         }
