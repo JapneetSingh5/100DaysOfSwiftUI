@@ -8,23 +8,34 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
-struct ImageData: Identifiable, Comparable, Codable {
+struct ImageData: Identifiable, Comparable, Codable, Equatable {
+    static func == (lhs: ImageData, rhs: ImageData) -> Bool {
+        (lhs.personName == rhs.personName) && (lhs.personCompany == rhs.personCompany)
+    }
+    
     
     enum CodingKeys: CodingKey{
-        case id, image, personName, personCompany, meetup, date
+        case id, image, personName, personCompany, meetup, date, latitude, longitude
     }
     
     static func < (lhs: ImageData, rhs: ImageData) -> Bool {
         lhs.personName < rhs.personName
     }
     
-    init(image: UIImage, personName: String, personCompany: String, meetup: String, date: Date){
+    init(){
+        
+    }
+    
+    init(image: UIImage, personName: String, personCompany: String, meetup: String, date: Date, latitude: CLLocationDegrees, longitude: CLLocationDegrees){
         self.image = image
         self.personCompany = personCompany
         self.personName = personName
         self.meetup = meetup
         self.date = date
+        self.coordinate.longitude = longitude
+        self.coordinate.latitude = latitude
     }
     
     public init(from decoder: Decoder) throws {
@@ -37,6 +48,8 @@ struct ImageData: Identifiable, Comparable, Codable {
         if let tempImg = try container.decode(Data?.self, forKey: .image){
             image = UIImage(data: tempImg) ?? UIImage(imageLiteralResourceName: "default")
         }
+        coordinate.latitude = try container.decode(CLLocationDegrees.self, forKey: .latitude)
+        coordinate.longitude = try container.decode(CLLocationDegrees.self, forKey: .longitude)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -49,6 +62,8 @@ struct ImageData: Identifiable, Comparable, Codable {
         if let jpegData = self.image.jpegData(compressionQuality: 0.8) {
             try container.encode(jpegData, forKey: .image)
         }
+        try container.encode(coordinate.latitude, forKey: .latitude)
+        try container.encode(coordinate.longitude, forKey: .longitude)
         
     }
     
@@ -58,5 +73,6 @@ struct ImageData: Identifiable, Comparable, Codable {
     var personCompany: String = "Indie Developer"
     var meetup: String = "SwiftCon 2020"
     var date: Date = Date()
+    var coordinate: CLLocationCoordinate2D = example
     
 }

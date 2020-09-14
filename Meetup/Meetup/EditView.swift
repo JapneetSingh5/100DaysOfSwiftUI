@@ -1,18 +1,15 @@
 //
-//  AddImage.swift
+//  DetailView.swift
 //  Meetup
 //
-//  Created by Japneet Singh on /139/20.
+//  Created by Japneet Singh on /149/20.
 //  Copyright © 2020 Japneet Singh. All rights reserved.
 //
 
 import SwiftUI
 import MapKit
 
-
-let example = CLLocationCoordinate2D(latitude: 37.334786, longitude: -122.009003)
-
-struct AddImage: View {
+struct EditView: View {
     let locationFetcher = LocationFetcher()
     @State private var image = UIImage(imageLiteralResourceName: "default")
     @State private var confName = ""
@@ -21,13 +18,16 @@ struct AddImage: View {
     @State private var personCompany: String = ""
     @State private var showingImagePicker = false
     @State private var coordinate: CLLocationCoordinate2D?
+    @State var imageEdit: ImageData
     @State private var locationButton = "Add current location"
-    @State var sourceType: UIImagePickerController.SourceType
     @ObservedObject var imageList: Images
     @Environment(\.presentationMode) var presentationMode
     
     func addImage(){
-        imageList.images.append(ImageData(image: self.image, personName: self.personName, personCompany: self.personCompany, meetup: self.confName, date: self.confDate, latitude: self.coordinate?.latitude ?? example.latitude, longitude: self.coordinate?.longitude ?? example.longitude))
+        if let index = imageList.images.firstIndex(of: imageEdit){
+            imageList.images.remove(at: index)
+        }
+        imageList.images.append(ImageData(image: self.image, personName: self.personName, personCompany: self.personCompany, meetup: self.confName, date: self.confDate, latitude: self.coordinate?.latitude ?? example.latitude, longitude: self.coordinate?.longitude ?? example.longitude ))
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -62,14 +62,6 @@ struct AddImage: View {
                     .onTapGesture {
                             self.showingImagePicker = true
                     }
-                    Button("Click a new photograph"){
-                        self.sourceType = UIImagePickerController.SourceType.camera
-                        self.showingImagePicker = true
-                    }
-                    Button("Add photograph from photo library"){
-                        self.sourceType = UIImagePickerController.SourceType.photoLibrary
-                        self.showingImagePicker = true
-                    }
                 }
                 Section(header: Text("PERSON DETAILS")){
                     TextField("Full Name", text: self.$personName)
@@ -82,6 +74,7 @@ struct AddImage: View {
                     }
                     HStack{
                         Text("Location")
+                            .padding(.leading)
                         Spacer()
                         Button("\(locationButton)"){
                             self.locationFetcher.start()
@@ -95,7 +88,7 @@ struct AddImage: View {
                             }
                         }
                     }
-
+                    
                 }
                 Section{
                     Button("Save"){
@@ -105,9 +98,9 @@ struct AddImage: View {
                 }
             }
             .sheet(isPresented: self.$showingImagePicker){
-                ImagePicker(image: self.$image, sourceType: self.sourceType)
+                ImagePicker(image: self.$image, sourceType: UIImagePickerController.SourceType.photoLibrary)
             }
-            .navigationBarTitle("Add Meetup Image")
+            .navigationBarTitle("Edit Meetup Image")
             .navigationBarItems(trailing: Button("Cancel"){
                 self.saveData()
                 self.presentationMode.wrappedValue.dismiss()
@@ -116,8 +109,8 @@ struct AddImage: View {
         }
 }
 
-struct AddImage_Previews: PreviewProvider {
+struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        AddImage(sourceType: UIImagePickerController.SourceType.photoLibrary, imageList: Images())
+        EditView(imageEdit: ImageData(), imageList: Images())
     }
 }

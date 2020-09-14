@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Meetup needs camera access to allow clicking of photographs.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Meetup needs your location to geo tag the images you import.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Meetup needs your location to geo tag the images you import.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Give permission to access photo library to import photographs.</string>
 	<key>CFBundleDevelopmentRegion</key>

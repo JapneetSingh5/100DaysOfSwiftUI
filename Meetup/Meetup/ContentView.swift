@@ -20,6 +20,10 @@ struct ContentView: View {
         return paths[0]
     }
     
+    func removeItems(at offsets: IndexSet) {
+        imageList.images.remove(atOffsets: offsets)
+    }
+    
     func loadData(){
         let filename = getDocumentsDirectory().appendingPathComponent("SavedImages")
          
@@ -36,36 +40,53 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView{
-            List(imageList.images.sorted()){image in
-                NavigationLink(destination: Text(image.personName)){
-                    HStack{
-                        Image(uiImage: image.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 100, height: 50)
-                            .cornerRadius(4)
-                        VStack(alignment: .leading){
-                            Text(image.personName.uppercased())
-                                .font(.headline)
-                            Text(image.personCompany)
-                                .font(.subheadline)
+            VStack{
+                List{
+                    ForEach(imageList.images){image in
+                        NavigationLink(destination: DetailView(image: image, imageList: self.imageList)){
                             HStack{
-                                Text(image.meetup)
-                                    .font(.caption)
-                                Spacer()
+                                Image(uiImage: image.image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 100, height: 50)
+                                    .cornerRadius(4)
+                                VStack(alignment: .leading){
+                                    Text(image.personName.uppercased())
+                                        .font(.headline)
+                                    Text(image.personCompany)
+                                        .font(.subheadline)
+                                    HStack{
+                                        Text(image.meetup)
+                                            .font(.caption)
+                                        Spacer()
+                                    }
+                                }
                             }
                         }
                     }
+                    .onDelete(perform: removeItems)
+                }
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        self.showingAddView = true
+                    }, label: {
+                        Image(systemName: "plus")
+                            .renderingMode(.original)
+                            .resizable()
+                            .frame(width: 40, height: 40, alignment: .center)
+                            .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 20)
+                            .background(Color.green)
+                            .clipShape(Circle())
+                    })
+                    Spacer()
                 }
             }
         .onAppear(perform: loadData)
         .navigationBarTitle("Meetup")
-        .navigationBarItems(trailing: Button("Add Image"){
-                self.showingAddView = true
-            })
-        }
+            .navigationBarItems(trailing: EditButton())
         .sheet(isPresented: self.$showingAddView){
-                AddImage(imageList: self.imageList)
+            AddImage(sourceType: UIImagePickerController.SourceType.camera, imageList: self.imageList)
             }
     }
 }
@@ -74,4 +95,5 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
+}
 }
