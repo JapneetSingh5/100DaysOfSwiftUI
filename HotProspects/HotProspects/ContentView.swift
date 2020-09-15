@@ -9,73 +9,34 @@
 import SwiftUI
 import UserNotifications
 
-class DelayedUpdater: ObservableObject {
-    var value = 0{
-        willSet{
-            objectWillChange.send()
-        }
-    }
-
-    init() {
-        for i in 1...10 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
-                self.value += 1
-            }
-        }
-    }
-}
-
-class User: ObservableObject {
-    @Published var name = "Taylor Swift"
-}
-
-struct EditView: View {
-    @EnvironmentObject var user: User
-
-    var body: some View {
-        TextField("Name", text: $user.name)
-    }
-}
-
-struct DisplayView: View {
-    @EnvironmentObject var user: User
-
-    var body: some View {
-        Text(user.name)
-    }
-}
 
 struct ContentView: View {
-    @ObservedObject var updater = DelayedUpdater()
-
+    var prospects = Prospects()
+   
     var body: some View {
-       VStack {
-            Button("Request Permission") {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                    if success {
-                        print("All set!")
-                    } else if let error = error {
-                        print(error.localizedDescription)
-                    }
+        TabView{
+            ProspectsView(filter: .none)
+                .tabItem{
+                    Image(systemName: "person.3")
+                    Text("Everyone")
+            }
+            ProspectsView(filter: .contacted)
+                .tabItem{
+                    Image(systemName: "checkmark.circle")
+                    Text("Contacted")
+            }
+            ProspectsView(filter: .uncontacted)
+                .tabItem{
+                    Image(systemName: "questionmark.diamond")
+                    Text("Uncontacted")
+            }
+            MeView()
+                .tabItem{
+                    Image(systemName: "person.crop.square")
+                    Text("Me")
                 }
-            }
-
-            Button("Schedule Notification") {
-                let content = UNMutableNotificationContent()
-                content.title = "Feed the cat"
-                content.subtitle = "It looks hungry"
-                content.sound = UNNotificationSound.default
-
-                // show this notification five seconds from now
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
-                // choose a random identifier
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-                // add our notification request
-                UNUserNotificationCenter.current().add(request)
-            }
         }
+        .environmentObject(self.prospects)
     }
 }
 
