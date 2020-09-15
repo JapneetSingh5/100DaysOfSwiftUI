@@ -7,6 +7,23 @@
 //
 
 import SwiftUI
+import UserNotifications
+
+class DelayedUpdater: ObservableObject {
+    var value = 0{
+        willSet{
+            objectWillChange.send()
+        }
+    }
+
+    init() {
+        for i in 1...10 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
+                self.value += 1
+            }
+        }
+    }
+}
 
 class User: ObservableObject {
     @Published var name = "Taylor Swift"
@@ -29,35 +46,36 @@ struct DisplayView: View {
 }
 
 struct ContentView: View {
-    @State private var selectedTab = 0
-    let user = User()
-    
-    var body: some View {
-        TabView(selection: self.$selectedTab){
-            Text("Tab 1")
-            .onTapGesture {
-                self.selectedTab = 2
-            }
-            .tabItem {
-                Image(systemName: "star")
-                Text("One")
-            }
-            .tag(1)
+    @ObservedObject var updater = DelayedUpdater()
 
-            Text("Tab 2")
-                .onTapGesture {
-                    self.selectedTab = 1
-            }
-                .tabItem {
-                    Image(systemName: "star.fill")
-                    Text("Two")
+    var body: some View {
+       VStack {
+            Button("Request Permission") {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                    if success {
+                        print("All set!")
+                    } else if let error = error {
+                        print(error.localizedDescription)
+                    }
                 }
-        .tag(2)
+            }
+
+            Button("Schedule Notification") {
+                let content = UNMutableNotificationContent()
+                content.title = "Feed the cat"
+                content.subtitle = "It looks hungry"
+                content.sound = UNNotificationSound.default
+
+                // show this notification five seconds from now
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+                // choose a random identifier
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+                // add our notification request
+                UNUserNotificationCenter.current().add(request)
+            }
         }
-//       VStack {
-//            EditView().environmentObject(user)
-//            DisplayView().environmentObject(user)
-//        }
     }
 }
 
