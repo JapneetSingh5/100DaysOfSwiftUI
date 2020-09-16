@@ -13,6 +13,8 @@ import UserNotifications
 struct ProspectsView: View {
     @EnvironmentObject var prospects: Prospects
     @State private var isShowingScanner = false
+    @State private var sortedByName = false
+    @State private var showingActionSheet = false
     
     enum FilterType {
         case none, contacted, uncontacted
@@ -38,6 +40,7 @@ struct ProspectsView: View {
             return prospects.people.filter { !$0.isContacted }
         }
     }
+
     
     func handleScan(result: Result<String, CodeScannerView.ScanError>) {
        self.isShowingScanner = false
@@ -93,7 +96,7 @@ struct ProspectsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(filteredProspects) { prospect in
+                ForEach(self.sortedByName ? filteredProspects.sorted() : filteredProspects) { prospect in
                     HStack{
                         VStack(alignment: .leading) {
                             Text(prospect.name)
@@ -123,15 +126,31 @@ struct ProspectsView: View {
                 }
             }
                 .navigationBarTitle(title)
-                .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(leading: Button(action:{
+                self.showingActionSheet = true
+            }){
+                Image(systemName: "arrow.up.arrow.down")
+                Text("Sort")
+                } ,
+                trailing: Button(action: {
                     self.isShowingScanner = true
                 }) {
                     Image(systemName: "qrcode.viewfinder")
                     Text("Scan")
-                })
+                }
+                )
         }
         .sheet(isPresented: $isShowingScanner) {
             CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: self.handleScan)
+        }
+        .actionSheet(isPresented: self.$showingActionSheet){
+            ActionSheet(title: Text("Sort prospects by:"), message: nil, buttons: [.default(Text("Most Recent"), action: {
+                self.sortedByName = false
+            }),
+            .default(Text("By Name (A to Z)"), action: {
+                self.sortedByName = true
+            }),
+            .cancel()])
         }
     }
 }

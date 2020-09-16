@@ -8,11 +8,21 @@
 
 import Foundation
 
-class Prospect: Identifiable, Codable {
+class Prospect: Identifiable, Codable, Comparable {
+    static func < (lhs: Prospect, rhs: Prospect) -> Bool {
+        lhs.name < rhs.name
+    }
+    
+    static func == (lhs: Prospect, rhs: Prospect) -> Bool {
+        (lhs.name == rhs.name) && (lhs.emailAddress == rhs.emailAddress)
+    }
+    
     let id = UUID()
     var name = "Anonymous"
     var emailAddress = ""
     fileprivate(set) var isContacted = false
+    
+    
 }
 
 class Prospects: ObservableObject{
@@ -21,20 +31,41 @@ class Prospects: ObservableObject{
     static let saveKey = "SavedData"
     
     init(){
+        self.people = []
         
-        if let data = UserDefaults.standard.data(forKey: Self.saveKey) {
-            if let decoded = try? JSONDecoder().decode([Prospect].self, from: data) {
-                self.people = decoded
-                return
-            }
+        let filename = getDocumentsDirectory().appendingPathComponent(Self.saveKey)
+         
+        do {
+            let data = try Data(contentsOf: filename)
+            print("File found")
+            print(data.description)
+            self.people = try JSONDecoder().decode([Prospect].self, from: data)
+            print("Data loaded")
+        } catch {
+            print("Unable to load saved data.")
         }
-        
-        self.people = [Prospect]()
     }
     
+//    init(){
+//
+//        if let data = UserDefaults.standard.data(forKey: Self.saveKey) {
+//            if let decoded = try? JSONDecoder().decode([Prospect].self, from: data) {
+//                self.people = decoded
+//                return
+//            }
+//        }
+//
+//        self.people = [Prospect]()
+//    }
+    
     private func save() {
-        if let encoded = try? JSONEncoder().encode(people) {
-            UserDefaults.standard.set(encoded, forKey: Self.saveKey)
+        do{
+            let filename = getDocumentsDirectory().appendingPathComponent(Self.saveKey)
+            let data = try JSONEncoder().encode(self.people)
+            try data.write(to: filename, options: [.atomicWrite, .completeFileProtection])
+            print("Data saved")
+        }catch{
+            print("Unable to save data")
         }
     }
     
@@ -45,7 +76,16 @@ class Prospects: ObservableObject{
     }
     
     func add(_ prospect: Prospect) {
-        people.append(prospect)
+        people.insert(prospect, at: 0)
         save()
     }
+    
+    func getDocumentsDirectory() -> URL {
+        // find all possible documents directories for this user
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+
+        // just send back the first one, which ought to be the only one
+        return paths[0]
+    }
+    
 }
