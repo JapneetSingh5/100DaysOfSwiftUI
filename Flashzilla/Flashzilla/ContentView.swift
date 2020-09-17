@@ -52,10 +52,17 @@ struct ContentView: View {
 
     var body: some View {
 
-       Text("Hello, World!")
-       .onAppear(perform: prepareHaptics)
-       .onTapGesture(perform: complexSuccess)
+     VStack {
+          Text("Hello")
+          Spacer()
+        Text("World")
+      }
+      .contentShape(Rectangle())
+      .onTapGesture {
+          print("VStack tapped!")
+      }
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
