@@ -18,30 +18,40 @@ extension View {
 }
 
 struct ContentView: View {
-    @State private var cards = [Card](repeating: Card.example, count: 10)
+    @State private var cards = [Card]()
     @State private var timeRemaining = 100
     @State private var isActive = true
+    @State private var showingEditScreen = false
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.accessibilityEnabled) var accessibilityEnabled
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     func removeCard(at index: Int) {
-        cards.remove(at: index)
         if cards.isEmpty {
             isActive = false
         }
+        cards.remove(at: index)
 
     }
     
+    func loadData() {
+        if let data = UserDefaults.standard.data(forKey: "Cards") {
+            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
+                self.cards = decoded
+            }
+        }
+    }
+    
     func resetCards() {
-        cards = [Card](repeating: Card.example, count: 10)
         timeRemaining = 100
         isActive = true
+        loadData()
     }
     
     var body: some View {
         ZStack {
-            Image("background")
+            Image(decorative: "background")
             .resizable()
             .scaledToFill()
             .edgesIgnoringSafeArea(.all)
@@ -65,6 +75,8 @@ struct ContentView: View {
                                 self.removeCard(at: index)
                                   }
                         }
+                        .allowsHitTesting(index == self.cards.count-1)
+                        .accessibility(hidden: index < self.cards.count - 1)
                         .stacked(at: index, in: self.cards.count)
                     }
                 }
@@ -81,21 +93,59 @@ struct ContentView: View {
 
             }
             
-            if differentiateWithoutColor {
+            VStack {
+                HStack {
+                    Spacer()
+
+                    Button(action: {
+                        self.showingEditScreen = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                            .padding()
+                            .background(Color.black.opacity(0.7))
+                            .clipShape(Circle())
+                    }
+                }
+
+                Spacer()
+            }
+            .foregroundColor(.white)
+            .font(.largeTitle)
+            .padding()
+            
+            if differentiateWithoutColor || accessibilityEnabled { 
                 VStack {
                     Spacer()
 
                     HStack {
-                        Image(systemName: "xmark.circle")
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .clipShape(Circle())
-                            .padding(.trailing, 250)
-                        Image(systemName: "checkmark.circle")
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .clipShape(Circle())
-                            .padding(.leading, 250)
+                        if (self.cards.count > 0) {
+                            Button(action: {
+                            withAnimation {
+                                self.removeCard(at: self.cards.count - 1)
+                            }
+                        }) {
+                            Image(systemName: "xmark.circle")
+                                .padding()
+                                .background(Color.black.opacity(0.7))
+                                .clipShape(Circle())
+                        }
+                        .accessibility(label: Text("Wrong"))
+                        .accessibility(hint: Text("Mark your answer as being incorrect."))
+                        Spacer()
+
+                        Button(action: {
+                            withAnimation {
+                                self.removeCard(at: self.cards.count - 1)
+                            }
+                        }) {
+                            Image(systemName: "checkmark.circle")
+                                .padding()
+                                .background(Color.black.opacity(0.7))
+                                .clipShape(Circle())
+                        }
+                        .accessibility(label: Text("Correct"))
+                        .accessibility(hint: Text("Mark your answer as being correct."))
+                        }
                     }
                     .foregroundColor(.white)
                     .font(.largeTitle)
@@ -105,6 +155,10 @@ struct ContentView: View {
             
             
         }
+        .sheet(isPresented: $showingEditScreen, onDismiss: resetCards) {
+                EditCards()
+            }
+        .onAppear(perform: resetCards)
         .onReceive(timer) { time in
             guard self.isActive else { return }
             if self.timeRemaining > 0 {
