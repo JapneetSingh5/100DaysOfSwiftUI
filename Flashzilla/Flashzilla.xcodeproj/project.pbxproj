@@ -14,6 +14,8 @@
 		3F0479192513CADD0011C194 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F0479182513CADD0011C194 /* Assets.xcassets */; };
 		3F04791C2513CADD0011C194 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F04791B2513CADD0011C194 /* Preview Assets.xcassets */; };
 		3F04791F2513CADD0011C194 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F04791D2513CADD0011C194 /* LaunchScreen.storyboard */; };
+		3F047927251505660011C194 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F047926251505660011C194 /* Card.swift */; };
+		3F047929251507170011C194 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F047928251507170011C194 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		3F04791B2513CADD0011C194 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3F04791E2513CADD0011C194 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F0479202513CADD0011C194 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F047926251505660011C194 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		3F047928251507170011C194 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 				3F04790F2513CADC0011C194 /* AppDelegate.swift */,
 				3F0479112513CADC0011C194 /* SceneDelegate.swift */,
 				3F0479162513CADC0011C194 /* ContentView.swift */,
+				3F047928251507170011C194 /* CardView.swift */,
+				3F047926251505660011C194 /* Card.swift */,
 				3F0479182513CADD0011C194 /* Assets.xcassets */,
 				3F04791D2513CADD0011C194 /* LaunchScreen.storyboard */,
 				3F0479202513CADD0011C194 /* Info.plist */,
@@ -151,7 +157,9 @@
 			files = (
 				3F0479152513CADC0011C194 /* Flashzilla.xcdatamodeld in Sources */,
 				3F0479102513CADC0011C194 /* AppDelegate.swift in Sources */,
+				3F047927251505660011C194 /* Card.swift in Sources */,
 				3F0479172513CADC0011C194 /* ContentView.swift in Sources */,
+				3F047929251507170011C194 /* CardView.swift in Sources */,
 				3F0479122513CADC0011C194 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
