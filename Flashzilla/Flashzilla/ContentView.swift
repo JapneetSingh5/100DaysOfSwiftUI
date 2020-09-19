@@ -21,7 +21,9 @@ struct ContentView: View {
     @State private var cards = [Card]()
     @State private var timeRemaining = 100
     @State private var isActive = true
-    @State private var showingEditScreen = false
+    @State private var showingSheet = false
+    @State private var showingSettingsScreen = false
+    @State private var sendToBack = true
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.accessibilityEnabled) var accessibilityEnabled
     
@@ -50,14 +52,17 @@ struct ContentView: View {
     }
     
     var body: some View {
+        
         ZStack {
+            
             Image(decorative: "background")
             .resizable()
             .scaledToFill()
             .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Time: \(timeRemaining)")
+                
+                Text(timeRemaining>0 ? "Time: \(timeRemaining)" : "Oops! You are out of time!")
                 .font(.largeTitle)
                 .foregroundColor(.white)
                 .padding(.horizontal, 20)
@@ -68,26 +73,38 @@ struct ContentView: View {
                         .opacity(0.75)
                 )
                 
-                ZStack {
-                    ForEach(0..<cards.count, id: \.self) { index in
-                        CardView(card: self.cards[index]){
-                            withAnimation {
-                                self.removeCard(at: index)
-                                  }
+                if timeRemaining>0 {
+                    ZStack {
+                        ForEach(0..<cards.count, id: \.self) { index in
+                            CardView(sendToBack: self.$sendToBack, card: self.cards[index], sendToBackFunc: {
+                                let temp = self.cards[self.cards.count - 1]
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                               self.cards.insert(temp, at: 0)
+                                           }
+                                print("card added to back")
+                            }, removal: {
+                                withAnimation {
+                                    self.removeCard(at:index)
+                                      }
+                                print("top card removed")
+                            })
+                            .allowsHitTesting(index == self.cards.count-1)
+                            .accessibility(hidden: index < self.cards.count - 1)
+                            .stacked(at: index, in: self.cards.count)
                         }
-                        .allowsHitTesting(index == self.cards.count-1)
-                        .accessibility(hidden: index < self.cards.count - 1)
-                        .stacked(at: index, in: self.cards.count)
                     }
+                    .allowsHitTesting(timeRemaining > 0)
                 }
-                .allowsHitTesting(timeRemaining > 0)
                 
-                if cards.isEmpty {
-                    Button("Start Again", action: resetCards)
+                if cards.isEmpty || timeRemaining==0 {
+                    withAnimation{
+                        Button("Start Again", action: resetCards)
+                            .padding()
+                            .background(Color.white)
+                            .foregroundColor(.black)
+                            .clipShape(Capsule())
                         .padding()
-                        .background(Color.white)
-                        .foregroundColor(.black)
-                        .clipShape(Capsule())
+                    }
                 }
                 
 
@@ -95,10 +112,21 @@ struct ContentView: View {
             
             VStack {
                 HStack {
+                    Button(action: {
+                        self.showingSettingsScreen = true
+                        self.showingSheet = true
+                    }){
+                        Image(systemName: "gear")
+                            .padding()
+                            .background(Color.black.opacity(0.7))
+                            .clipShape(Circle())
+                    }
+                    
                     Spacer()
 
                     Button(action: {
-                        self.showingEditScreen = true
+                        self.showingSettingsScreen = false
+                        self.showingSheet = true
                     }) {
                         Image(systemName: "plus.circle")
                             .padding()
@@ -121,6 +149,9 @@ struct ContentView: View {
                         if (self.cards.count > 0) {
                             Button(action: {
                             withAnimation {
+                                if self.sendToBack{
+                                    self.cards.insert(self.cards[self.cards.count - 1], at: 0)
+                                }
                                 self.removeCard(at: self.cards.count - 1)
                             }
                         }) {
@@ -155,8 +186,13 @@ struct ContentView: View {
             
             
         }
-        .sheet(isPresented: $showingEditScreen, onDismiss: resetCards) {
+        .sheet(isPresented: $showingSheet, onDismiss: resetCards) {
+            if self.showingSettingsScreen{
+                SettingsView(sendToBack: self.$sendToBack)
+            }else{
                 EditCards()
+            }
+                
             }
         .onAppear(perform: resetCards)
         .onReceive(timer) { time in

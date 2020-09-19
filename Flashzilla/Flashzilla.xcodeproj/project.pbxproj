@@ -17,6 +17,7 @@
 		3F047927251505660011C194 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F047926251505660011C194 /* Card.swift */; };
 		3F047929251507170011C194 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F047928251507170011C194 /* CardView.swift */; };
 		3F1364CB25155AAA0068EFB7 /* EditCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1364CA25155AAA0068EFB7 /* EditCards.swift */; };
+		3FA9704825160A9A00836282 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA9704725160A9A00836282 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		3F047926251505660011C194 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		3F047928251507170011C194 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3F1364CA25155AAA0068EFB7 /* EditCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCards.swift; sourceTree = "<group>"; };
+		3FA9704725160A9A00836282 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				3F04790F2513CADC0011C194 /* AppDelegate.swift */,
 				3F0479112513CADC0011C194 /* SceneDelegate.swift */,
 				3F0479162513CADC0011C194 /* ContentView.swift */,
+				3FA9704725160A9A00836282 /* SettingsView.swift */,
 				3F047928251507170011C194 /* CardView.swift */,
 				3F047926251505660011C194 /* Card.swift */,
 				3F1364CA25155AAA0068EFB7 /* EditCards.swift */,
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F0479152513CADC0011C194 /* Flashzilla.xcdatamodeld in Sources */,
+				3FA9704825160A9A00836282 /* SettingsView.swift in Sources */,
 				3F0479102513CADC0011C194 /* AppDelegate.swift in Sources */,
 				3F047927251505660011C194 /* Card.swift in Sources */,
 				3F1364CB25155AAA0068EFB7 /* EditCards.swift in Sources */,
