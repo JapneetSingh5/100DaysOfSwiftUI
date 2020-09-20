@@ -8,42 +8,60 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct OuterView: View {
     var body: some View {
-        HStack(alignment: .midAccountAndName) {
-            VStack {
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("@japneet")
-                    .lineLimit(nil)
-                .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.top] }
-                Image("profile-pic")
-                    .resizable()
-                    .frame(width: 64, height: 64)
-            }
-
-            VStack {
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("testing")
-                Text("Full name:")
-                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.top] }
-                Text("JAPNEET SINGH")
-                    .font(.largeTitle)
-                Text("testing")
-                Text("testing")
-                Text("testing")
-            }
+        VStack {
+            Text("Top")
+            InnerView()
+                .background(Color.green)
+            Text("Bottom")
         }
     }
+}
+
+struct InnerView: View {
+    var body: some View {
+        HStack {
+            Text("Left")
+            GeometryReader { geo in
+                Text("Center")
+                    .background(Color.blue)
+                    .onTapGesture {
+                        print("Global center: \(geo.frame(in: .global).midX) x \(geo.frame(in: .global).midY)")
+                        print("Custom center: \(geo.frame(in: .named("Custom")).midX) x \(geo.frame(in: .named("Custom")).midY)")
+                        print("Local center: \(geo.frame(in: .local).midX) x \(geo.frame(in: .local).midY)")
+                    }
+            }
+            .background(Color.orange)
+            Text("Right")
+        }
+    }
+}
+
+struct ContentView: View {
+    let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
+
+    var body: some View {
+        GeometryReader{ fullView in
+            ScrollView(.horizontal, showsIndicators: false){
+                HStack{
+                    ForEach(0..<50){index in
+                        GeometryReader{geo in
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(self.colors[index%7])
+                                .frame(height: 150)
+                                .rotation3DEffect(.degrees(
+                                    -Double( geo.frame(in: .global).midX - (fullView.size.width/2)  )/5 ), axis: (x:0,y:1,z:0) )
+                        }
+                        .frame(width: 150)
+                    }
+            }
+                 .padding(.horizontal, (fullView.size.width - 150) / 2)
+        }
+    }
+        .edgesIgnoringSafeArea(.all)
+    
+}
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -52,12 +70,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-extension VerticalAlignment {
-    struct MidAccountAndName: AlignmentID {
-        static func defaultValue(in d: ViewDimensions) -> CGFloat {
-            d[.top]
-        }
-    }
-
-    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
-}
