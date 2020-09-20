@@ -54,6 +54,7 @@ struct ContentView: View {
             if let startWords = try? String(contentsOf: startWordURL){
                 let allWords = startWords.components(separatedBy: "\n")
                 rootWord = allWords.randomElement() ?? "silkworm"
+                self.usedWords = [String]()
                 score = 0
                 return
             }
@@ -107,22 +108,29 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView{
-            VStack{
+            VStack(alignment: .leading){
                 TextField("Enter your word", text: $newWord, onCommit: addNewWord)
                     .padding()
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
-                List{
-                    ForEach(usedWords, id: \.self){ word in
-                        HStack {
-                            Image(systemName: "\(word.count).circle")
-                            Text(word)
+                    List{
+                        ForEach(0..<self.usedWords.count, id:\.self){ index in
+                            GeometryReader{ geo in
+                                HStack{
+                                    Image(systemName: "\(self.usedWords[index].count).circle")
+                                        .foregroundColor(
+                                            Color.init(red: 0.5, green: Double(geo.frame(in: .global).minY/600), blue: 0.5))
+                                    Text(self.usedWords[index])
+                                    Spacer()
+                                }
+                                .offset(x: geo.frame(in: .named("List")).minY/20 + 1, y: 0)
+                                .accessibilityElement(children: .ignore)
+                                .accessibility(label: Text("\(self.usedWords[index]), \(self.usedWords[index].count) letters"))
+                            }
                         }
-                        .accessibilityElement(children: .ignore)
-                        .accessibility(label: Text("\(word), \(word.count) letters"))
+                        Text("Score: \(self.score)").font(.subheadline).foregroundColor(.secondary)
                     }
-                     Text("Score: \(score)").font(.subheadline).foregroundColor(.secondary)
-                }
+            .coordinateSpace(name: "List")
             }.navigationBarTitle(rootWord).navigationBarItems(leading: Button(action: startGame){
                 HStack {
                     Image(systemName: "play.fill")

@@ -36,11 +36,19 @@ struct MissionView: View {
         GeometryReader{ geometry in
             ScrollView(.vertical){
                 VStack{
-                    Image(decorative: self.mission.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: geometry.size.width * 0.7)
-                        .padding(.top)
+                    GeometryReader{ geo in
+                        HStack{
+                            Spacer()
+                            Image(decorative: self.mission.image)
+                                .resizable()
+                                .scaledToFit()
+                                .padding(.top)
+                                .scaleEffect(0.8 + (geo.frame(in: .global).midY/600) )
+                            .frame(maxWidth: geometry.size.width * 0.7)
+                            Spacer()
+                        }
+                    }
+                     .padding()
                     Text("Launched: \(self.mission.formattedLaunchDate)").font(.headline).padding(.top)
                     Text("\(self.mission.description)")
                         .padding()
