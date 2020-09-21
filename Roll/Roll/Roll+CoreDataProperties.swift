@@ -2,7 +2,7 @@
 //  Roll+CoreDataProperties.swift
 //  Roll
 //
-//  Created by Japneet Singh on /209/20.
+//  Created by Japneet Singh on /219/20.
 //  Copyright © 2020 Japneet Singh. All rights reserved.
 //
 //
@@ -17,8 +17,17 @@ extension Roll {
         return NSFetchRequest<Roll>(entityName: "Roll")
     }
 
-    @NSManaged public var sides: Int16
     @NSManaged public var diceCount: Int16
     @NSManaged public var result: Int16
+    @NSManaged public var sides: Int16
+    @NSManaged public var time: Date?
+    
+    var wrappedTime: Date{
+        if time == nil {
+            return Date()
+        }else{
+            return time!
+        }
+    }
 
 }
