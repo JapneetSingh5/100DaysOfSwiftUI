@@ -16,6 +16,7 @@
 		3F74279F2517A75700FB1761 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F74279D2517A75700FB1761 /* LaunchScreen.storyboard */; };
 		3F7427A82517A7E100FB1761 /* Roll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7427A62517A7E100FB1761 /* Roll+CoreDataClass.swift */; };
 		3F7427A92517A7E100FB1761 /* Roll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7427A72517A7E100FB1761 /* Roll+CoreDataProperties.swift */; };
+		3FCD10022518D3B2003AAFA9 /* DiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCD10012518D3B2003AAFA9 /* DiceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		3F7427A02517A75700FB1761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F7427A62517A7E100FB1761 /* Roll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Roll+CoreDataClass.swift"; path = "Roll/Roll+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3F7427A72517A7E100FB1761 /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Roll+CoreDataProperties.swift"; path = "Roll/Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3FCD10012518D3B2003AAFA9 /* DiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				3F74278F2517A75700FB1761 /* AppDelegate.swift */,
 				3F7427912517A75700FB1761 /* SceneDelegate.swift */,
 				3F7427962517A75700FB1761 /* ContentView.swift */,
+				3FCD10012518D3B2003AAFA9 /* DiceView.swift */,
 				3F7427982517A75700FB1761 /* Assets.xcassets */,
 				3F74279D2517A75700FB1761 /* LaunchScreen.storyboard */,
 				3F7427A02517A75700FB1761 /* Info.plist */,
@@ -160,6 +163,7 @@
 				3F7427902517A75700FB1761 /* AppDelegate.swift in Sources */,
 				3F7427972517A75700FB1761 /* ContentView.swift in Sources */,
 				3F7427A92517A7E100FB1761 /* Roll+CoreDataProperties.swift in Sources */,
+				3FCD10022518D3B2003AAFA9 /* DiceView.swift in Sources */,
 				3F7427922517A75700FB1761 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
