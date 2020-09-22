@@ -23,6 +23,7 @@
 		3FE4823B251927310059A388 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FE4823A251927310059A388 /* Assets.xcassets */; };
 		3FE4823E251927310059A388 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FE4823D251927310059A388 /* Preview Assets.xcassets */; };
 		3FE48241251927310059A388 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FE4823F251927310059A388 /* LaunchScreen.storyboard */; };
+		3FFD7C7D251A4B32009CF470 /* MultiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFD7C7C251A4B32009CF470 /* MultiPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3FE4823D251927310059A388 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3FE48240251927310059A388 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FE48242251927310059A388 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FFD7C7C251A4B32009CF470 /* MultiPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				3FE48231251927300059A388 /* AppDelegate.swift */,
 				3FE48233251927300059A388 /* SceneDelegate.swift */,
 				3FE48238251927300059A388 /* ContentView.swift */,
+				3FFD7C7C251A4B32009CF470 /* MultiPickerView.swift */,
 				3F89E194251A1C7E00401B1E /* SkiDetailsView.swift */,
 				3F89E196251A1CC100401B1E /* ResortDetailsView.swift */,
 				3F89E198251A229C00401B1E /* Facility.swift */,
@@ -189,6 +192,7 @@
 				3F89E19B251A254000401B1E /* Favorites.swift in Sources */,
 				3FE48234251927300059A388 /* SceneDelegate.swift in Sources */,
 				3F89E191251A199400401B1E /* WelcomeView.swift in Sources */,
+				3FFD7C7D251A4B32009CF470 /* MultiPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
