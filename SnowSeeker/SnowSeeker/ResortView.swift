@@ -20,7 +20,7 @@ struct ResortView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Image(decorative: resort.id)
                     .resizable()
-                    .scaledToFit()
+                    .aspectRatio(contentMode: .fill)
                     .overlay(
                         VStack{
                             Spacer()

@@ -24,12 +24,12 @@ struct MultiPickerView: View {
                         .frame(width: 40, height: 25)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                         Text(self.choices[choiceNumber])
+                        Spacer()
                         if(self.selection[self.choices[choiceNumber]] ?? true){
-                            Spacer()
                             Image(systemName: "checkmark")
                         }
-
                     }
+                .contentShape(Rectangle())
                     .onTapGesture {
                             self.selection[self.choices[choiceNumber]]?.toggle()
                     }
@@ -40,6 +40,7 @@ struct MultiPickerView: View {
             })
             .navigationBarTitle("Filter Countries")
         }
+    .navigationViewStyle(StackNavigationViewStyle())
 
     }
 }

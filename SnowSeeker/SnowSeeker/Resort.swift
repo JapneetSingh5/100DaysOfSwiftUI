@@ -10,7 +10,7 @@ import Foundation
 
 struct Resort: Codable, Identifiable {
     enum SortBy{
-        case none, alphabetical, country
+        case none, alphabetical, country, runs
     }
     var id: String
     var name: String
@@ -42,6 +42,10 @@ struct Resort: Codable, Identifiable {
         case .country:
             return resorts.sorted(by: {
                 $0.country < $1.country
+            })
+        case .runs:
+            return resorts.sorted(by: {
+                $0.runs < $1.runs
             })
         }
     }

@@ -74,12 +74,13 @@ struct ContentView: View {
                                 self.showCountrySheet = true
                                 self.isFiltered = true
                             }){
-                                Text("FILTER BY COUNTRY")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
+                                    Text("CHOOSE COUNTRIES")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
                             }
                             .padding(.vertical)
                             .foregroundColor(.blue)
+                        
                             
                             Text("PRICE RANGE")
                                 .font(.caption)
@@ -116,11 +117,11 @@ struct ContentView: View {
                     NavigationLink(destination: ResortView(resort: resort)){
                         Image(resort.country)
                         .resizable()
-                        .scaledToFit()
+                            .aspectRatio(contentMode: .fill)
                         .frame(width: 40, height: 25)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                         .overlay(RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.black, lineWidth: 1))
+                            .stroke(Color.black.opacity(0.5), lineWidth: 1))
                         
                         VStack(alignment: .leading){
                             Text(resort.name)
@@ -176,6 +177,9 @@ struct ContentView: View {
                         }),
                         .default(Text("Country"), action: {
                             self.sortKey = Resort.SortBy.country
+                        }),
+                        .default(Text("Runs"), action: {
+                            self.sortKey = Resort.SortBy.runs
                         }),
                         .cancel()
                     ])
